@@ -1,3 +1,15 @@
+## Trello:
+https://trello.com/b/0FrQKLY4/location-data-app
+
+## Github
+https://github.com/Property-Scoop/property-scoop
+
+## Heroku
+https://property-scoop.herokuapp.com/
+
+## Kanban
+https://trello.com/b/0FrQKLY4/location-data-app
+
 # property-scoop
 User Stories:
 
