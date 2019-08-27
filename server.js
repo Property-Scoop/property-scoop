@@ -1,5 +1,7 @@
 'use strict';
-//application dependencies
+
+//=====================Global Variables and appplication dependensies=================================//
+
 const express = require('express')
 const app = express()
 
@@ -18,11 +20,39 @@ client.connect();
 client.on('error', err => console.error(err));
 
 //ejs dependency
-/*app.set('view engine', 'ejs');
-app.use(express.static('./public/../'));*/
+app.set('view engine', 'ejs');
+app.use(express.static('./public/../'));
 
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
+//this what returns data from our form as json object.
+app.use(express.urlencoded({extended:true}));
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+
+//=======================================================================================//
+
+
+
+//=====================================ROUTES============================================//
+app.get('/', function (req, res) {
+  res.render('index');
+})
+
+//=======================================================================================//
+
+
+
+
+//=======================================Constructor Functions===========================//
+
+
+//=======================================================================================//
+
+
+
+
+
+
+//=======================================Functions========================================//
+
+
+//=======================================================================================//
