@@ -36,7 +36,9 @@ app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 app.get('/', function (req, res) {
   res.render('index');
 })
-
+app.get('/searchResults', function (req, res) {
+  res.render('searchResults');
+})
 
 //=======================================================================================//
 
