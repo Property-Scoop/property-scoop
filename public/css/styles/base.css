@@ -1,0 +1,22 @@
+body{
+    background-color: grey;
+    text-align:center;
+}
+
+#indexPage{
+    margin-top: 35%;
+}
+#searchResults h1{
+    margin-top:15%;
+}
+
+h1{
+    font-size: 4em;
+}
+
+#indexPage header p{
+    margin: 5% auto 3% auto;
+    font-size: 2em;
+    color: orange;
+}
+
