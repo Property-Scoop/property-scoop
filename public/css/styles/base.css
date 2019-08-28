@@ -4,14 +4,15 @@ body{
 }
 
 #indexPage{
-    margin-top: 35%;
+    margin-top: 20%;
 }
-#searchResults h1{
+#searchResults #logo{
     margin-top:15%;
 }
 
-h1{
-    font-size: 4em;
+#indexPage #logo{
+    width: 35%;
+   
 }
 
 #indexPage header p{
@@ -20,3 +21,26 @@ h1{
     color: orange;
 }
 
+#displayMapContainer{
+    width: 80%;
+    height: 20em;
+    border: 2px dotted black;
+    margin: 3% auto 3% auto;
+}
+
+#searchResults h2{
+    font-size: 1.4em;
+}
+
+#searchResults .buildingImg{
+    width: 30%;
+    height: 10em;
+    border: 2px solid black;
+    margin:3% auto 2% auto;
+}
+
+footer{
+    position: absolute;
+    bottom: 30px;
+    
+}
