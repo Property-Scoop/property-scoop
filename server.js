@@ -40,6 +40,9 @@ app.get('/searchResults', function (req, res) {
   res.render('searchResults');
 })
 
+app.get('/aboutUs', function (req, res) {
+  res.render('aboutUs');
+})
 //=======================================================================================//
 
 

@@ -1,6 +1,7 @@
 body{
     background-color: grey;
     text-align:center;
+    height: 100%;
 }
 
 #indexPage{
@@ -40,7 +41,11 @@ body{
 }
 
 footer{
-    position: absolute;
-    bottom: 30px;
-    
+   position: absolute;
+   top: 95%;
+   margin: 0 40%;
+}
+
+#smallNote{
+    font-size: 0.75em;
 }
