@@ -66,8 +66,13 @@ We will communicate through slack.
 Everyone’s contact numbers are as follows:
  
 ### Project scope:
+
 We want to have an mvp ready for thursday. The application should have an input for address ( or use the users location) and when submited it should display the address on a map and information about the address. The application should have basic styling.
  
 ### Links:
 AboutUS background photo link: https://unsplash.com/photos/dI9KhXi0ooE
 Google Font: https://fonts.google.com/?selection.family=Lexend+Giga
+
+### Credit:
+https://www.freelogodesign.org/  for our logo;
+

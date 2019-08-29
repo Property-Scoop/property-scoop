@@ -17,17 +17,43 @@
     </head>
 
     <body id = "searchResults"> 
-        <header>
-            <h1>Property Scoop (logo??)</h1>
-            <p>Enter the address to get information about the building</p>
-        </header>
-        <main>
-            <form id="search-form" >
-                <label for="search">Search for a building</label>
-                <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
-                <button type="submit">Get information</button>
-            </form>
-        </main>
-        <footer></footer>
+        <div class = "container">
+            <header>
+                <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+                
+            </header>
+            <main>
+                
+                <div id = "displayMapContainer"> 
+                <img id = "map" src ="" alt="Map of search query">
+                </div> 
+                <h2>Your address: ____________</h2>
+
+                <section class = "buildingImg">
+                    <img src = "" alt = "image of the building">
+                </section>
+
+                <section class = "buildingData">
+                    <p>Owner's name: </p>  
+                    <p>Building permit:</p>
+                    <p>Year was built:</p>
+                    <p>Property value:</p>
+                    <p>Lot Sq Feet:</p>
+                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+
+                </section>
+                <section class = "buttons">
+                    <button id="save">Save Building</button>
+                    <button id="newSearch">New Search</button>
+
+                </section>
+
+                
+            </main>
+        </div>
+        <footer>
+                <p><a href = "aboutUs.ejs">About Us</a> </p>
+                <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
+         </footer>
     </body>
 </html> 
