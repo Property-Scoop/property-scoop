@@ -17,35 +17,43 @@
     </head>
 
     <body id = "searchResults"> 
-        <header>
-            <img id = "logo" src="../public/css/img/logo.png" alt='logo'>
-            
-        </header>
-        <main>
-            
-            <div id = "displayMapContainer"> 
-            <img id = "map" src ="" alt="Map of search query">
-            </div> 
-            <h2>Your address: ____________</h2>
+        <div class = "container">
+            <header>
+                <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+                
+            </header>
+            <main>
+                
+                <div id = "displayMapContainer"> 
+                <img id = "map" src ="" alt="Map of search query">
+                </div> 
+                <h2>Your address: ____________</h2>
 
-            <section class = "buildingImg">
-                <img src = "" alt = "image of the building">
-            </section>
+                <section class = "buildingImg">
+                    <img src = "" alt = "image of the building">
+                </section>
 
-            <section class = "buildingData">
-                <p>Owner's name: </p>  
-                <p>Building permit:</p>
-                <p>Year was built:</p>
-                <p>Property value:</p>
-                <p>Lot Sq Feet:</p>
-                <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+                <section class = "buildingData">
+                    <p>Owner's name: </p>  
+                    <p>Building permit:</p>
+                    <p>Year was built:</p>
+                    <p>Property value:</p>
+                    <p>Lot Sq Feet:</p>
+                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
 
-            </section>
-            
-        </main>
+                </section>
+                <section class = "buttons">
+                    <button id="save">Save Building</button>
+                    <button id="newSearch">New Search</button>
+
+                </section>
+
+                
+            </main>
+        </div>
         <footer>
-            <a href = "aboutUs.ejs">About Us</a> </br>
-            <a href = "https://www.kingcounty.gov/">All information provided by King County</a>
-        </footer>
+                <p><a href = "aboutUs.ejs">About Us</a> </p>
+                <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
+         </footer>
     </body>
 </html> 
