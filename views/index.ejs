@@ -18,6 +18,24 @@
 
     <body id="indexPage">
        
+            <nav id="navigation">
+                <div id="menuToggle">
+                    
+                      <!-- hidden checkbox will be used as click receiver -->
+                      <input type="checkbox" />
+                      
+                      <!-- this spans will be used for hamburger icon -->
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      
+                      <ul id="menu">
+                        <a href="/"><li>Home</li></a>
+                        <a href="#"><li>Saved Buildings</li></a>
+                        <a href="aboutUs"><li>Meet The Team</li></a>
+                      </ul>
+                </div>
+            </nav>
 
             <div class = "container">
                 <header>
@@ -25,12 +43,19 @@
                     <p>Enter the address to get information about the building in King County, WA</p>
                 </header>
                 <main>
+                
                     <img id="map" class="hide" src="" alt="Map of search query">
                     <h2 class="query-placeholder"></h2>
+<<<<<<< HEAD
                     <form id="search-form" action="searchResults" >
+=======
+                    <form id="search-form" >
+                    <!--<form id="search-form" action = "searchResults">-->
+
+>>>>>>> 3646423f9ae26be7cd33fdac7f02ab69beb0b1cd
                         
                             <label for="search">Search for a building:</label>
-                            <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
+                            <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
                         
                         <button type="submit">Search</button>
                     </form>
@@ -45,9 +70,10 @@
                 </main>
             </div>
             <footer>
-                <p> <a href = "aboutUs.ejs">About Us</a> </p>
+                <p> <a href = "aboutUs">About Us</a> </p>
                     <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
             </footer>
+            
     
     </body>
 </html>
