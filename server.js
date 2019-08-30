@@ -6,7 +6,7 @@ require('dotenv').config();
 // Load Application Dependencies
 const express = require('express')
 const superagent = require('superagent');
-const pg = require('pg');
+// const pg = require('pg');
 const cors = require('cors');
 
 // Application Setup
@@ -15,9 +15,9 @@ app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // Connect To Database
-const client = new pg.Client(process.env.DATABASE_URL)
-client.connect();
-client.on('error', err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL)
+// client.connect();
+// client.on('error', err => console.error(err));
 
 //ejs dependency
 app.set('view engine', 'ejs');
@@ -30,12 +30,12 @@ app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 //=====================================ROUTES============================================//
 // API Routes
 app.get('/', function (req, res) {
-  res.render('index');
-})
-app.get('/location', searchToLatLong);
+  res.render('index')
+});
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
+app.get('/searchResults', searchToLatLong);
 //=======================================Constructor Functions===========================//
 
 
@@ -61,9 +61,10 @@ function Location(query, res) {
   this.formatted_query = res.body.results[0].formatted_address;
   this.latitude = res.body.results[0].geometry.location.lat;
   this.longitude = res.body.results[0].geometry.location.lng;
+  this.mapURL = res.body.results
 }
 
-// ///prototype function to City constructor function to post NEW data in database
+
 
 // City.prototype.postLocation = function (){
 
@@ -85,15 +86,17 @@ function handleError(err, res) {
 
 function searchToLatLong(request, response) {
   //Define the URL for the GEOCODE API
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.data}&key=${process.env.GEOCODE_API_KEY}`;
-  // console.log(url);
-
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
+  console.log(url)
   superagent.get(url)
     .then(result => {
-      const location = new Location(request.query.data, result);
-      response.send(location);
+      console.log(result)
+      const location = new Location(request.query.search, result);
+      console.log(location);
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`});
     })
-    .catch(err => handleError(err, response));
+    .catch(err => {handleError(err, response)})
 }
 
 
