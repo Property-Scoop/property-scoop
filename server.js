@@ -36,25 +36,8 @@ app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
 app.get('/searchResults', searchToLatLong);
+
 //=======================================Constructor Functions===========================//
-
-
-//=======================================================================================//
-
-
-
-
-
-//=======================================Functions========================================//
-
-
-//=======================================================================================//
-
-
-
-
-//=======================================Ana's functions=================================//
-
 // // constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
   this.search_query = query;
@@ -64,6 +47,37 @@ function Location(query, res) {
   this.mapURL = res.body.results
 }
 
+//=======================================================================================//
+
+
+
+//=======================================Functions========================================//
+// ERROR HANDLER
+function handleError(err, res) {
+  console.error(err);
+  if (res) res.status(500).send('Sorry, something went wrong');
+}
+
+function searchToLatLong(request, response) {
+  //Define the URL for the GEOCODE API
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
+ 
+  superagent.get(url)
+    .then(result => {
+      
+      const location = new Location(request.query.search, result);
+     
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`});
+    })
+    .catch(err => {handleError(err, response)})
+}
+
+//=======================================================================================//
+
+
+
+//=======================================Ana's functions=================================//
 
 
 // City.prototype.postLocation = function (){
@@ -76,29 +90,6 @@ function Location(query, res) {
 //       this.id = result.rows[0].id;
 //     });
 // };
-
-//=======================================Functions========================================//
-// ERROR HANDLER
-function handleError(err, res) {
-  console.error(err);
-  if (res) res.status(500).send('Sorry, something went wrong');
-}
-
-function searchToLatLong(request, response) {
-  //Define the URL for the GEOCODE API
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
-  console.log(url)
-  superagent.get(url)
-    .then(result => {
-      console.log(result)
-      const location = new Location(request.query.search, result);
-      console.log(location);
-      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`});
-    })
-    .catch(err => {handleError(err, response)})
-}
-
 
 //add  building to database from search form
 //fix the order and value names . and in form we will have only note al other things will be as a paragraphs
@@ -118,7 +109,6 @@ function searchToLatLong(request, response) {
 //       errorHandle(error, response);
 //     });
 // }
-
 
 
 //=======================================================================================//
