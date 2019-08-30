@@ -1,20 +1,20 @@
 'use strict';
 
 //=====================Global Variables and appplication dependensies=================================//
-
-const express = require('express')
-const app = express()
-
-const superagent = require('superagent');
-
-const cors = require('cors');
-app.use(cors());
-
 require('dotenv').config();
+
+// Load Application Dependencies
+const express = require('express')
+const superagent = require('superagent');
+const pg = require('pg');
+const cors = require('cors');
+
+// Application Setup
+const app = express()
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 
-//dependency for database
-const pg = require('pg');
+// Connect To Database
 const client = new pg.Client(process.env.DATABASE_URL)
 client.connect();
 client.on('error', err => console.error(err));
@@ -25,29 +25,17 @@ app.use(express.static('./public/../'));
 
 //this what returns data from our form as json object.
 app.use(express.urlencoded({extended:true}));
-
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 
-//=======================================================================================//
-
-
-
 //=====================================ROUTES============================================//
+// API Routes
 app.get('/', function (req, res) {
   res.render('index');
 })
-app.get('/searchResults', function (req, res) {
-  res.render('searchResults');
-})
-
+app.get('/location', searchToLatLong);
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
-//=======================================================================================//
-
-
-
-
 //=======================================Constructor Functions===========================//
 
 
@@ -68,13 +56,12 @@ app.get('/aboutUs', function (req, res) {
 //=======================================Ana's functions=================================//
 
 // // constructor function to buld a city object instances, paths based on the geo.json file
-// function City(query, data){
-//   this.search_query = query;
-//   this.formatted_query = data.formatted_address;
-//   this.latitude = data.geometry.location.lat;
-//   this.longitude = data.geometry.location.lng;
-//   this.id;
-// }
+function Location(query, res) {
+  this.search_query = query;
+  this.formatted_query = res.body.results[0].formatted_address;
+  this.latitude = res.body.results[0].geometry.location.lat;
+  this.longitude = res.body.results[0].geometry.location.lng;
+}
 
 // ///prototype function to City constructor function to post NEW data in database
 
@@ -89,6 +76,25 @@ app.get('/aboutUs', function (req, res) {
 //     });
 // };
 
+//=======================================Functions========================================//
+// ERROR HANDLER
+function handleError(err, res) {
+  console.error(err);
+  if (res) res.status(500).send('Sorry, something went wrong');
+}
+
+function searchToLatLong(request, response) {
+  //Define the URL for the GEOCODE API
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.data}&key=${process.env.GEOCODE_API_KEY}`;
+  // console.log(url);
+
+  superagent.get(url)
+    .then(result => {
+      const location = new Location(request.query.data, result);
+      response.send(location);
+    })
+    .catch(err => handleError(err, response));
+}
 
 
 //add  building to database from search form
