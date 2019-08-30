@@ -3,39 +3,14 @@
 <html lang="en">
 
    <head>
-    <meta charset="UTF-8">
-    
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-    <title>Property-scoop</title>
-    <link href="../public/css/styles/reset.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/styles/base.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/styles/layout.css" type="text/css" rel="stylesheet" />
-    <link href="../public/css/styles/modules.css" type="text/css" rel="stylesheet" />
-    <!-- <link href="../public/styles/icons.css" type="text/css" rel="stylesheet" /> -->
-        
+    <%- include partials/head %>
     </head>
 
     <body id="indexPage">
        
-            <nav id="navigation">
-                <div id="menuToggle">
-                    
-                      <!-- hidden checkbox will be used as click receiver -->
-                      <input type="checkbox" />
-                      
-                      <!-- this spans will be used for hamburger icon -->
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      
-                      <ul id="menu">
-                        <a href="/"><li>Home</li></a>
-                        <a href="#"><li>Saved Buildings</li></a>
-                        <a href="aboutUs"><li>Meet The Team</li></a>
-                      </ul>
-                </div>
-            </nav>
+
+           <%- include partials/nav%>
+
 
             <div class = "container">
                 <header>
@@ -46,13 +21,9 @@
                 
                     <img id="map" class="hide" src="" alt="Map of search query">
                     <h2 class="query-placeholder"></h2>
-<<<<<<< HEAD
-                    <form id="search-form" action="searchResults" >
-=======
-                    <form id="search-form" >
-                    <!--<form id="search-form" action = "searchResults">-->
 
->>>>>>> 3646423f9ae26be7cd33fdac7f02ab69beb0b1cd
+                    <form id="search-form" action="searchResults" >
+
                         
                             <label for="search">Search for a building:</label>
                             <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
@@ -70,8 +41,9 @@
                 </main>
             </div>
             <footer>
-                <p> <a href = "aboutUs">About Us</a> </p>
-                    <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
+
+                <%- include partials/footer %>
+
             </footer>
             
     
