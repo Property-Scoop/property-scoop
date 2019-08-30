@@ -18,6 +18,24 @@
 
     <body id="indexPage">
        
+            <nav id="navigation">
+                <div id="menuToggle">
+                    
+                      <!-- hidden checkbox will be used as click receiver -->
+                      <input type="checkbox" />
+                      
+                      <!-- this spans will be used for hamburger icon -->
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      
+                      <ul id="menu">
+                        <a href="/"><li>Home</li></a>
+                        <a href="#"><li>Saved Buildings</li></a>
+                        <a href="aboutUs"><li>Meet The Team</li></a>
+                      </ul>
+                </div>
+            </nav>
 
             <div class = "container">
                 <header>
@@ -28,7 +46,7 @@
                     <form id="search-form" action = "searchResults">
                         
                             <label for="search">Search for a building:</label>
-                            <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
+                            <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
                         
                         <button type="submit">Get Information</button>
                     </form>
