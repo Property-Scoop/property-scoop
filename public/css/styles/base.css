@@ -82,14 +82,17 @@ footer{
 
 /* ======================================================= */
 
-
-
-#displayMapContainer{
-    width: 80%;
-    height: 20em;
+#map {
+    height: 400px;  /* The height is 400 pixels */
+    width: 40%;  /* The width is the width of the web page */
     border: 2px dotted black;
     margin: 3% auto 3% auto;
 }
+
+/* #displayMapContainer{
+    border: 2px dotted black;
+    margin: 3% auto 3% auto;
+} */
 
 #searchResults h2{
     font-size: 1.4em;
