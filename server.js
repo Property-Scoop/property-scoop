@@ -40,6 +40,9 @@ app.get('/searchResults', function (req, res) {
   res.render('searchResults');
 })
 
+app.get('/aboutUs', function (req, res) {
+  res.render('aboutUs');
+})
 //=======================================================================================//
 
 
@@ -54,7 +57,6 @@ app.get('/searchResults', function (req, res) {
 
 
 
-
 //=======================================Functions========================================//
 
 
@@ -63,3 +65,51 @@ app.get('/searchResults', function (req, res) {
 
 
 
+//=======================================Ana's functions=================================//
+
+// // constructor function to buld a city object instances, paths based on the geo.json file
+// function City(query, data){
+//   this.search_query = query;
+//   this.formatted_query = data.formatted_address;
+//   this.latitude = data.geometry.location.lat;
+//   this.longitude = data.geometry.location.lng;
+//   this.id;
+// }
+
+// ///prototype function to City constructor function to post NEW data in database
+
+// City.prototype.postLocation = function (){
+
+//   let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
+//   const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
+
+//   return client.query(SQL, values)
+//     .then (result => {
+//       this.id = result.rows[0].id;
+//     });
+// };
+
+
+
+//add  building to database from search form
+//fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+// function postBuilding(request, response){
+
+//   const SQL = `INSERT INTO buildings(image_url, owner, permit_num, year, description, value, note, sq_feet) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
+//   const values = [request.body.addBuilding[1], request.body.addBuilding[0], request.body.addBuilding[3], request.body.addBuilding[5]=== './public/styles/book-icon-139.png' ? `../../../${request.body.addBooks[5]}` : request.body.addBooks[5], request.body.addBooks[2], request.body.addBooks[4]];
+
+//   return client.query(SQL, values)
+//     .then(res=>{
+//       if(res.rowCount >0){
+//         response.redirect(`/building/${res.rows[0].id}`);
+//       }
+
+//     })
+//     .catch(error => {
+//       errorHandle(error, response);
+//     });
+// }
+
+
+
+//=======================================================================================//

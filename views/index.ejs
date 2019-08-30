@@ -17,17 +17,46 @@
     </head>
 
     <body id="indexPage">
-        <header>
-            <h1>Property Scoop (logo??)</h1>
-            <p>Enter the address to get information about the building</p>
-        </header>
-        <main>
-            <form id="search-form" >
-                <label for="search">Search for a building</label>
-                <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
-                <button type="submit">Get information</button>
-            </form>
-        </main>
-        <footer></footer>
+       
+            <nav id="navigation">
+                <div id="menuToggle">
+                    
+                      <!-- hidden checkbox will be used as click receiver -->
+                      <input type="checkbox" />
+                      
+                      <!-- this spans will be used for hamburger icon -->
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      
+                      <ul id="menu">
+                        <a href="/"><li>Home</li></a>
+                        <a href="#"><li>Saved Buildings</li></a>
+                        <a href="aboutUs"><li>Meet The Team</li></a>
+                      </ul>
+                </div>
+            </nav>
+
+            <div class = "container">
+                <header>
+                    <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+                    <p>Enter the address to get information about the building in King County, WA</p>
+                </header>
+                <main>
+                    <form id="search-form" action = "searchResults">
+                        
+                            <label for="search">Search for a building:</label>
+                            <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
+                        
+                        <button type="submit">Get Information</button>
+                    </form>
+                </main>
+            </div>
+            <footer>
+                <p> <a href = "aboutUs">About Us</a> </p>
+                    <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
+            </footer>
+            
+    
     </body>
 </html>
