@@ -32,7 +32,7 @@ app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 app.get('/', function (req, res) {
   res.render('index');
 })
-app.get('/location', searchToLatLong);
+app.get('/searchResults', searchToLatLong);
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
@@ -84,14 +84,18 @@ function handleError(err, res) {
 }
 
 function searchToLatLong(request, response) {
+  
+
   //Define the URL for the GEOCODE API
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.data}&key=${process.env.GEOCODE_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
   // console.log(url);
 
   superagent.get(url)
     .then(result => {
-      const location = new Location(request.query.data, result);
-      response.send(location);
+      const location = new Location(request.query.search, result);
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`});
+      
     })
     .catch(err => handleError(err, response));
 }
