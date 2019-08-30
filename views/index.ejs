@@ -25,13 +25,23 @@
                     <p>Enter the address to get information about the building in King County, WA</p>
                 </header>
                 <main>
+                    <img id="map" class="hide" src="" alt="Map of search query">
+                    <h2 class="query-placeholder"></h2>
                     <form id="search-form" >
                         
                             <label for="search">Search for a building:</label>
                             <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
                         
-                        <button type="submit">Get Information</button>
+                        <button type="submit">Search</button>
                     </form>
+                    <div class="column-container hide">
+                            <!-- Section for data returned -->
+                            <section>
+                              <h3>Results:</h3>
+                              <ul class="results"></ul>
+                            </section>
+                    </div>
+
                 </main>
             </div>
             <footer>
