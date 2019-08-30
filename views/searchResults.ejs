@@ -2,21 +2,14 @@
 
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-        <title>Property-scoop</title>
-        <link href="../public/css/styles/reset.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/base.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/layout.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/modules.css" type="text/css" rel="stylesheet" />
-        <!-- <link href="../public/styles/icons.css" type="text/css" rel="stylesheet" /> -->
-            
-    </head>
+        <head>
+                <%- include partials/head %>
+        </head>
 
     <body id = "searchResults"> 
+
+            <%- include partials/nav%> 
+
         <div class = "container">
             <header>
                 <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
@@ -52,8 +45,7 @@
             </main>
         </div>
         <footer>
-                <p><a href = "aboutUs">About Us</a> </p>
-                <p><a href = "https://www.kingcounty.gov/">All information provided by King County</a></p>
+                <%- include partials/footer %>
          </footer>
     </body>
 </html> 
