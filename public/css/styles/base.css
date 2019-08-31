@@ -1,5 +1,5 @@
 body{
-    background-color:rgb(170, 169, 169);
+    background-color:rgb(163, 162, 162);
     text-align:center;
     margin:0;
     padding:0;
@@ -8,6 +8,7 @@ body{
    justify-content: space-between; 
    height:100%;
    font-family: "Avenir Next", "Avenir", sans-serif;
+   width: 100vw;
 }
 
 a{
@@ -34,7 +35,7 @@ footer{
 
 /* ======================LOGO======================== */
 #searchResults #logo{
-    margin-top:11vh;
+    margin-top:5vh;
     width: 20vh;
 }
 
@@ -55,45 +56,59 @@ footer{
 
 
 /* ===================index page form styling============================ */
-#indexPage form{
+#indexPage form, #searchResults form{
     display: flex;
     flex-direction: column;
 }
-#indexPage form label{
+#indexPage form label, #searchResults form label{
     margin-bottom: 30px;
     font-size: 40px;
 }
 
-#indexPage form input{
+#indexPage form input, #searchResults form input{
     margin:0px auto 30px auto;
     font-size: 40px;
     width: 70vw;
     text-align: center;
     border-radius: 5px;
 }
-#indexPage form button{
+#indexPage form button, #searchResults form button{
     width: 30vw;
     margin: 40px auto 30px auto;
     height: 5vw;
     border-radius: 6px;
     background-color: rgb(206, 133, 74);
     font-size: 30px;
-    margin-bottom: 38vh;
+    
 }
 
+#indexPage form button{
+  margin-bottom: 38vh;
+
+}
+
+#searchResults section button{
+  font-size: 30px;
+}
+#search-form.hide{
+  display: none;
+}
 /* ======================================================= */
 
-
-
-#displayMapContainer{
-    width: 80%;
-    height: 20em;
+#map {
+    height: 400px;  /* The height is 400 pixels */
+    width: 75%;  /* The width is the width of the web page */
     border: 2px dotted black;
     margin: 3% auto 3% auto;
 }
 
+
 #searchResults h2{
-    font-size: 1.4em;
+    font-size: 1.6em;
+    font-weight: bold;
+    color:rgb(48, 45, 45);
+    width: 80vw;
+    margin: 10px auto;
 }
 
 #searchResults .buildingImg{
@@ -113,7 +128,7 @@ footer{
     
 } 
 #searchResults .buttons{
-    margin-bottom: 16vh;
+    margin-bottom: 3vh;
 
 }
 
@@ -141,7 +156,7 @@ a{
   position: relative;
   top: 50px;
   left: 50px;
-  
+  width:calc(100% - 50px);
   z-index: 1;
   
   -webkit-user-select: none;
@@ -166,9 +181,7 @@ a{
   -webkit-touch-callout: none;
 }
 
-/*
- * Just a quick hamburger
- */
+
 #menuToggle span
 {
   display: block;
@@ -177,7 +190,7 @@ a{
   margin-bottom: 5px;
   position: relative;
   
-  background: #cdcdcd;
+  background: #e4e4e4;
   border-radius: 3px;
   
   z-index: 1;
@@ -211,7 +224,7 @@ a{
 }
 
 /*
- * But let's hide the middle one.
+ * hide the middle one.
  */
 #menuToggle input:checked ~ span:nth-last-child(3)
 {
@@ -236,7 +249,7 @@ a{
   position: absolute;
   width: 100%;
   height: 50px;
-  margin: -100px 0 0 -50px;
+  margin:-100px 0 0 -50px;
   padding: 30px;
   padding-top: 70px;
   

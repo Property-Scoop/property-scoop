@@ -30,51 +30,40 @@ app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 //=====================================ROUTES============================================//
 // API Routes
 app.get('/', function (req, res) {
-  res.render('index');
-})
-app.get('/location', searchToLatLong);
+  res.render('index')
+});
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
+app.get('/searchResults', getLocation);
+
 //=======================================Constructor Functions===========================//
-
-
-//=======================================================================================//
-
-
-
-
-
-//=======================================Functions========================================//
-
-
-//=======================================================================================//
-
-
-
-
-//=======================================Ana's functions=================================//
-
 // // constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
   this.search_query = query;
   this.formatted_query = res.body.results[0].formatted_address;
   this.latitude = res.body.results[0].geometry.location.lat;
   this.longitude = res.body.results[0].geometry.location.lng;
+  this.mapURL = res.body.results
+  this.id;
 }
 
-// ///prototype function to City constructor function to post NEW data in database
 
-// City.prototype.postLocation = function (){
+//function to add location data in database
+Location.prototype.addLocation = function (){
 
-//   let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
-//   const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
+  let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
+  const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
 
-//   return client.query(SQL, values)
-//     .then (result => {
-//       this.id = result.rows[0].id;
-//     });
-// };
+  return client.query(SQL, values)
+    .then (result => {
+      this.id = result.rows[0].id;
+      console.log(this.id);
+    });
+};
+//=======================================================================================//
+
+
 
 //=======================================Functions========================================//
 // ERROR HANDLER
@@ -85,20 +74,70 @@ function handleError(err, res) {
 
 function searchToLatLong(request, response) {
   //Define the URL for the GEOCODE API
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.data}&key=${process.env.GEOCODE_API_KEY}`;
-  // console.log(url);
-
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
+  
   superagent.get(url)
     .then(result => {
-      const location = new Location(request.query.data, result);
-      response.send(location);
+      console.log(result);
+      const location = new Location(request.query.search, result);
+
+      //envoke function to cache google location data to database 'locations'
+      location.addLocation(request);
+      
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`,
+      address:location.formatted_query, 
+      // image:`https://maps.googleapis.com/maps/api/streetview?size=600x300&$&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=${process.env.GEOCODE_API_KEY}`
+      });
     })
-    .catch(err => handleError(err, response));
+    .catch(err => {handleError(err, response)})
 }
 
+//=======================================================================================//
 
-//add  building to database from search form
-//fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+
+
+//=======================================Ana's functions=================================//
+
+//route to handle user request and send the response from our database or GOOGLE
+function getLocation(req,res){
+
+  //check if this lcoation exist in database
+  lookupLocation(req.query.search)
+    .then(location => {
+
+      if (location){
+        //if exists send the object as response
+        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query});
+      }
+
+      //if doesn't exists go to go to google api
+      else
+      {
+        searchToLatLong(req, res);
+      }
+    });
+}
+
+//check if data from SQL DB contains requested location
+let lookupLocation = (location) =>{
+  let SQL = 'SELECT * FROM locations WHERE search_query=$1';
+  let values = [location];
+  return client.query(SQL, values)
+    .then(result => {
+      if (result.rowCount > 0){
+        // if so return location data
+        return result.rows[0];
+      }
+    });
+};
+
+
+// add  building to database from search form
+// fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+
+
 // function postBuilding(request, response){
 
 //   const SQL = `INSERT INTO buildings(image_url, owner, permit_num, year, description, value, note, sq_feet) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
@@ -115,7 +154,6 @@ function searchToLatLong(request, response) {
 //       errorHandle(error, response);
 //     });
 // }
-
 
 
 //=======================================================================================//

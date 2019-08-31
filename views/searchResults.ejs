@@ -16,14 +16,23 @@
                 
             </header>
             <main>
+                <form id="search-form" class="hide" action="searchResults" >
+
+                    
+                        <label for="search">Search for a building:</label>
+                        <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
+                    
+                    <button type="submit" class="submit">Search</button>
+                </form>
                 
                 <div id = "displayMapContainer"> 
-                <img id = "map" src ="" alt="Map of search query">
+                    <img id ="map" src ="<%= locationData %>" alt="Map of search query">
                 </div> 
-                <h2>Your address: ____________</h2>
+            <div class = "toggle">
+                <h2>Address: <%= address%></h2>
 
                 <section class = "buildingImg">
-                    <img src = "" alt = "image of the building">
+                    <img src = " " alt = "image of the building">
                 </section>
 
                 <section class = "buildingData">
@@ -40,12 +49,14 @@
                     <button id="newSearch">New Search</button>
 
                 </section>
-
-                
+            </div>   
+                      
             </main>
         </div>
         <footer>
+
                 <%- include partials/footer %>
+
          </footer>
     </body>
 </html> 
