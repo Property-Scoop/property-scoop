@@ -15,9 +15,9 @@ app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // Connect To Database
-const client = new pg.Client(process.env.DATABASE_URL)
-client.connect();
-client.on('error', err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL)
+// client.connect();
+// client.on('error', err => console.error(err));
 
 //ejs dependency
 app.set('view engine', 'ejs');
@@ -59,17 +59,17 @@ function Location(query, res) {
 // }
 
 //function to add location data in database
-Location.prototype.addLocation = function (){
+// Location.prototype.addLocation = function (){
 
-  let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
-  const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
+//   let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
+//   const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
 
-  return client.query(SQL, values)
-    .then (result => {
-      this.id = result.rows[0].id;
-      console.log(this.id);
-    });
-};
+//   return client.query(SQL, values)
+//     .then (result => {
+//       this.id = result.rows[0].id;
+//       console.log(this.id);
+//     });
+// };
 //=======================================================================================//
 
 
@@ -130,52 +130,47 @@ function getLocation(req,res){
 }
 
 //check if data from SQL DB contains requested location
-let lookupLocation = (location) =>{
-  let SQL = 'SELECT * FROM locations WHERE search_query=$1';
-  let values = [location];
-  return client.query(SQL, values)
-    .then(result => {
-      if (result.rowCount > 0){
-        // if so return location data
-        return result.rows[0];
-      }
-    });
-};
+// let lookupLocation = (location) =>{
+//   let SQL = 'SELECT * FROM locations WHERE search_query=$1';
+//   let values = [location];
+//   return client.query(SQL, values)
+//     .then(result => {
+//       if (result.rowCount > 0){
+//         // if so return location data
+//         return result.rows[0];
+//       }
+//     });
+// };
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
-  return superagent.get(getPIN)
-    .then(result => {
-      let output =  JSON.parse(result.text);
-      let PIN = output.items[0].PIN;
+  superagent.get(getPIN)
+    .then((res) => {
+      let output =  JSON.parse(res.text);
+      console.log(output.items[0].PIN);
+      return output.items[0].PIN;
       // console.log(output.items[0].PIN);
-    }) .end(console.log(this.PIN))
-    // }) .end(getKingCountyTaxData(PIN))
-  
-
-
-      
-      // return new GISdata (query, response);
-    //   const GISdata = new GISdata(request.query.search, result);
-    //   const PIN = results.item.PIN;
-    //   .then(result => {
-        
-      
-      // console.log(PIN)
-    };
-    
-  getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
-
-
-function getKingCountyTaxData (PIN) {
-  let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
-  return superagent.get(getGISurl)
-    .then(result => {
-      let output = JSON.parse(result.text);
-      console.log(output);
-      // let GIStaxData =
+    })
+    .then((PIN) => {
+      let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
+      superagent.get(getGISurl)
+        .then((res) =>
+          console.log(res.text))
     })
 }
+
+getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
+
+
+// function getKingCountyTaxData (PIN) {
+//   let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
+//   return superagent.get(getGISurl)
+//     .then(result => {
+//       let output = JSON.parse(result.text);
+//       console.log(output);
+//       // let GIStaxData =
+//     })
+// }
 
 
 
