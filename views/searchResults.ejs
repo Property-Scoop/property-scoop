@@ -2,32 +2,61 @@
 
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-        <title>Property-scoop</title>
-        <link href="../public/css/styles/reset.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/base.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/layout.css" type="text/css" rel="stylesheet" />
-        <link href="../public/css/styles/modules.css" type="text/css" rel="stylesheet" />
-        <!-- <link href="../public/styles/icons.css" type="text/css" rel="stylesheet" /> -->
-            
-    </head>
+        <head>
+                <%- include partials/head %>
+        </head>
 
     <body id = "searchResults"> 
-        <header>
-            <h1>Property Scoop (logo??)</h1>
-            <p>Enter the address to get information about the building</p>
-        </header>
-        <main>
-            <form id="search-form" >
-                <label for="search">Search for a building</label>
-                <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here">
-                <button type="submit">Get information</button>
-            </form>
-        </main>
-        <footer></footer>
+
+            <%- include partials/nav%> 
+
+        <div class = "container">
+            <header>
+                <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+                
+            </header>
+            <main>
+                <form id="search-form" class="hide" action="searchResults" >
+
+                    
+                        <label for="search">Search for a building:</label>
+                        <input type="text" name="search" id="inputSearch" placeholder="Enter a building address here" required>
+                    
+                    <button type="submit" class="submit">Search</button>
+                </form>
+                
+                <div id = "displayMapContainer"> 
+                    <img id ="map" src ="<%= locationData %>" alt="Map of search query">
+                </div> 
+            <div class = "toggle">
+                <h2>Address: <%= address%></h2>
+
+                <section class = "buildingImg">
+                    <img src = " " alt = "image of the building">
+                </section>
+
+                <section class = "buildingData">
+                    <p>Owner's name: </p>  
+                    <p>Building permit:</p>
+                    <p>Year was built:</p>
+                    <p>Property value:</p>
+                    <p>Lot Sq Feet:</p>
+                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+
+                </section>
+                <section class = "buttons">
+                    <button id="save">Save Building</button>
+                    <button id="newSearch">New Search</button>
+
+                </section>
+            </div>   
+                      
+            </main>
+        </div>
+        <footer>
+
+                <%- include partials/footer %>
+
+         </footer>
     </body>
 </html> 
