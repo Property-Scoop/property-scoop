@@ -75,7 +75,7 @@ function handleError(err, res) {
 function searchToLatLong(request, response) {
   //Define the URL for the GEOCODE API
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
-  
+
   superagent.get(url)
     .then(result => {
       console.log(result);
@@ -84,10 +84,11 @@ function searchToLatLong(request, response) {
       //envoke function to cache google location data to database 'locations'
       location.addLocation(request);
       
+
       response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
       &key=${process.env.GEOCODE_API_KEY}`,
-      address:location.formatted_query, 
-      // image:`https://maps.googleapis.com/maps/api/streetview?size=600x300&$&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=${process.env.GEOCODE_API_KEY}`
+      address:location.formatted_query,
+      image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`
       });
     })
     .catch(err => {handleError(err, response)})
@@ -109,7 +110,7 @@ function getLocation(req,res){
       if (location){
         //if exists send the object as response
         res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query});
+      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`});
       }
 
       //if doesn't exists go to go to google api
