@@ -48,6 +48,15 @@ function Location(query, res) {
   this.id;
 }
 
+// function GISdata(query, response) {
+//   this.equal_query = query;
+//   this.PIN = response.PIN;
+//   // this.GISdata = response.GISdata;
+// }
+
+// GISdata.prototype.addData = PIN => 
+//   return client.query(PIN)
+// }
 
 //function to add location data in database
 Location.prototype.addLocation = function (){
@@ -132,6 +141,29 @@ let lookupLocation = (location) =>{
       }
     });
 };
+
+function getKingCountyGISdata(location) {
+  let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
+  // let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
+  return superagent.get(getPIN)
+    .then(result => {
+      let output =  JSON.parse(result.text);
+      let PIN = output.items[0].PIN;
+      console.log(output.items[0].PIN);
+      // return new GISdata (query, response);
+    //   const GISdata = new GISdata(request.query.search, result);
+    //   const PIN = results.item.PIN;
+    //   .then(result => {
+        
+      })
+    };
+   
+  getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
+
+
+
+
+
 
 
 // add  building to database from search form
