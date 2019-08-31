@@ -6,7 +6,7 @@ require('dotenv').config();
 // Load Application Dependencies
 const express = require('express')
 const superagent = require('superagent');
-// const pg = require('pg');
+const pg = require('pg');
 const cors = require('cors');
 
 // Application Setup
@@ -15,9 +15,9 @@ app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // Connect To Database
-// const client = new pg.Client(process.env.DATABASE_URL)
-// client.connect();
-// client.on('error', err => console.error(err));
+const client = new pg.Client(process.env.DATABASE_URL)
+client.connect();
+client.on('error', err => console.error(err));
 
 //ejs dependency
 app.set('view engine', 'ejs');
@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
-app.get('/searchResults', searchToLatLong);
+app.get('/searchResults', getLocation);
 
 //=======================================Constructor Functions===========================//
 // // constructor function to buld a city object instances, paths based on the geo.json file
@@ -45,8 +45,22 @@ function Location(query, res) {
   this.latitude = res.body.results[0].geometry.location.lat;
   this.longitude = res.body.results[0].geometry.location.lng;
   this.mapURL = res.body.results
+  this.id;
 }
 
+
+//function to add location data in database
+Location.prototype.addLocation = function (){
+
+  let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
+  const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
+
+  return client.query(SQL, values)
+    .then (result => {
+      this.id = result.rows[0].id;
+      console.log(this.id);
+    });
+};
 //=======================================================================================//
 
 
@@ -66,6 +80,9 @@ function searchToLatLong(request, response) {
     .then(result => {
       
       const location = new Location(request.query.search, result);
+
+      //envoke function to cache google location data to database 'locations'
+      location.addLocation(request);
      
       response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
       &key=${process.env.GEOCODE_API_KEY}`});
@@ -79,20 +96,45 @@ function searchToLatLong(request, response) {
 
 //=======================================Ana's functions=================================//
 
+//route to handle user request and send the response from our database or GOOGLE
+function getLocation(req,res){
 
-// City.prototype.postLocation = function (){
+  //check if this lcoation exist in database
+  lookupLocation(req.query.search)
+    .then(location => {
 
-//   let SQL = 'INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING id';
-//   const values = [this.search_query, this.formatted_query, this.latitude, this.longitude];
+      if (location){
+        //if exists send the object as response
+        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=13&size=600x300&maptype=roadmap
+      &key=${process.env.GEOCODE_API_KEY}`});
+      }
 
-//   return client.query(SQL, values)
-//     .then (result => {
-//       this.id = result.rows[0].id;
-//     });
-// };
+      //if doesn't exists go to go to google api
+      else
+      {
+        searchToLatLong(req, res);
+      }
+    });
+}
 
-//add  building to database from search form
-//fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+//check if data from SQL DB contains requested location
+let lookupLocation = (location) =>{
+  let SQL = 'SELECT * FROM locations WHERE search_query=$1';
+  let values = [location];
+  return client.query(SQL, values)
+    .then(result => {
+      if (result.rowCount > 0){
+        // if so return location data
+        return result.rows[0];
+      }
+    });
+};
+
+
+// add  building to database from search form
+// fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+
+
 // function postBuilding(request, response){
 
 //   const SQL = `INSERT INTO buildings(image_url, owner, permit_num, year, description, value, note, sq_feet) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
