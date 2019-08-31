@@ -58,7 +58,7 @@ Location.prototype.addLocation = function (){
   return client.query(SQL, values)
     .then (result => {
       this.id = result.rows[0].id;
-      console.log(this.id);
+      //console.log(this.id);
     });
 };
 //=======================================================================================//
@@ -78,7 +78,7 @@ function searchToLatLong(request, response) {
   
   superagent.get(url)
     .then(result => {
-      console.log(result);
+      //console.log(result);
       const location = new Location(request.query.search, result);
 
       //envoke function to cache google location data to database 'locations'
@@ -86,15 +86,20 @@ function searchToLatLong(request, response) {
       
       response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
       &key=${process.env.GEOCODE_API_KEY}`,
-      address:location.formatted_query, 
+      address:location.formatted_query,
       // image:`https://maps.googleapis.com/maps/api/streetview?size=600x300&$&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=${process.env.GEOCODE_API_KEY}`
+      //`https://maps.googleapis.com/maps/api/js?key=${process.env.GEOCODE_API_KEY}&callback=${initMap}`
       });
     })
     .catch(err => {handleError(err, response)})
 }
 
-//=======================================================================================//
 
+//=======================================================================================//
+/*function initMap() {
+  let uluru = {lat: 47.608013, lng: -122.335167};
+  let marker = new google.maps.Marker({position: uluru, map: map});
+}*/
 
 
 //=======================================Ana's functions=================================//
