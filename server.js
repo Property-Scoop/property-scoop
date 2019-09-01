@@ -48,17 +48,17 @@ function Location(query, res) {
   this.id;
 }
 
-function Property(PIN) {
+function Property(PIN, taxpayerName, jurisdiction, propName, presentUse, levyCode, address, appValue, numBuilding, numUnits, lotSqft) {
   this.PIN = PIN;
   this.taxpayerName = taxpayerName;
   this.jurisdiction = jurisdiction;
-  this.propname;
+  this.propName = propName;
   this.presentUse = presentUse;
   this.levyCode = levyCode;
   this.address = address;
   this.appValue = appValue;
-  this.numBuilding;
-  this.numUnits;
+  this.numBuilding = numBuilding;
+  this.numUnits = numUnits;
   this.lotSqft = lotSqft;
 }
 
