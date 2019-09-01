@@ -36,7 +36,7 @@ app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
 app.get('/searchResults', getLocation);
-
+app.get()
 //=======================================Constructor Functions===========================//
 // // constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
@@ -167,10 +167,12 @@ function getKingCountyGISdata(location) {
         .then((res) => {
           let output = JSON.parse(res.text);
           const property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
-          
           console.log(property)
+          res.send(property);
         })
-    })
+      })
+      .catch(err => handleError(err, response));
+
 }
 
 getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
