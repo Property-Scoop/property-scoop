@@ -35,8 +35,8 @@ app.get('/', function (req, res) {
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
 })
-app.get('/searchResults', getLocation);
-app.get()
+app.get('/searchResults', searchToLatLong);
+//app.get('/searchResults', getLocation);
 //=======================================Constructor Functions===========================//
 // // constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
@@ -61,12 +61,6 @@ function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE
   this.numUnits = NUMUNITS;
   this.lotSqft = LOTSQFT;
 }
-
-// function GISdata(query, response) {
-//   this.equal_query = query;
-//   this.PIN = response.PIN;
-//   // this.GISdata = response.GISdata;
-// }
 
 //function to add location data in database
 // Location.prototype.addLocation = function (){
@@ -93,51 +87,62 @@ function handleError(err, res) {
 
 function searchToLatLong(request, response) {
   //Define the URL for the GEOCODE API
+  console.log(response)
+  request.query.search = cleanAddress(request.query.search);
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
-  
+  console.log(`Google URL: ${url}`)
   superagent.get(url)
     .then(result => {
-      console.log(result);
+      //console.log(response.result);
       const location = new Location(request.query.search, result);
-
+      console.log(cleanAddress(location.mapURL[0].formatted_address));
       //envoke function to cache google location data to database 'locations'
-      location.addLocation(request);
-      
+      // location.addLocation(request);
+      getKingCountyGISdata(encodeURIComponent(request.query.search));
       response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`,
-      address:location.formatted_query, 
-      // image:`https://maps.googleapis.com/maps/api/streetview?size=600x300&$&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=${process.env.GEOCODE_API_KEY}`
+      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query,
       });
     })
-    .catch(err => {handleError(err, response)})
+    // .catch(err => {handleError(err, res)})
 }
 
+// Remove Apartment Numbers, commas, and country from input address
+// AND replace spaces with GIS compatible URL encoding
+function cleanAddress(address) {
+  let cleaned = [];
+  for (let x of address.split(' ')) {
+    if (!x.includes('#') && (!x.includes('USA'))) {
+      cleaned.push(x.replace(/,/,''));
+    }
+  }
+  return cleaned.join(' ');
+}
 //=======================================================================================//
 
 
 
 //=======================================Ana's functions=================================//
 
-//route to handle user request and send the response from our database or GOOGLE
-function getLocation(req,res){
+// //route to handle user request and send the response from our database or GOOGLE
+// function getLocation(req,res){
 
-  //check if this lcoation exist in database
-  lookupLocation(req.query.search)
-    .then(location => {
+//   //check if this lcoation exist in database
+//   //lookupLocation(req.query.search)
+//     .then(location => {
 
-      if (location){
-        //if exists send the object as response
-        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query});
-      }
+//       if (location){
+//         //if exists send the object as response
+//         res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
+//       &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query});
+//       }
 
-      //if doesn't exists go to go to google api
-      else
-      {
-        searchToLatLong(req, res);
-      }
-    });
-}
+//       //if doesn't exists go to go to google api
+//       else
+//       {
+//         searchToLatLong(req, res);
+//       }
+//     });
+// }
 
 //check if data from SQL DB contains requested location
 // let lookupLocation = (location) =>{
@@ -154,6 +159,7 @@ function getLocation(req,res){
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
+  console.log(`GIS Input Location: ${location} ${getPIN}`);
   superagent.get(getPIN)
     .then((res) => {
       let output = JSON.parse(res.text);
@@ -166,18 +172,21 @@ function getKingCountyGISdata(location) {
       superagent.get(getGISurl)
         .then((res) => {
           let output = JSON.parse(res.text);
-          const property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
-          console.log(property)
-          res.send(property);
+          let property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
+          // return property;
         })
-      })
-      .catch(err => handleError(err, response));
-
+    })
 }
 
-getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
+// const getKingCountyGISdata = async (location) => {
+//   try {
+//     let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
+//     console.log(`GIS Input Location: ${location} ${getPIN}`);
 
-
+//   } catch (err) {
+//     return;
+//   }
+// }
 // add  building to database from search form
 // fix the order and value names . and in form we will have only note al other things will be as a paragraphs
 
