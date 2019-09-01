@@ -48,14 +48,24 @@ function Location(query, res) {
   this.id;
 }
 
+function Property(PIN) {
+  this.PIN = PIN;
+  this.taxpayerName = taxpayerName;
+  this.jurisdiction = jurisdiction;
+  this.propname;
+  this.presentUse = presentUse;
+  this.levyCode = levyCode;
+  this.address = address;
+  this.appValue = appValue;
+  this.numBuilding;
+  this.numUnits;
+  this.lotSqft = lotSqft;
+}
+
 // function GISdata(query, response) {
 //   this.equal_query = query;
 //   this.PIN = response.PIN;
 //   // this.GISdata = response.GISdata;
-// }
-
-// GISdata.prototype.addData = PIN => 
-//   return client.query(PIN)
 // }
 
 //function to add location data in database
@@ -146,33 +156,22 @@ function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
   superagent.get(getPIN)
     .then((res) => {
-      let output =  JSON.parse(res.text);
-      console.log(output.items[0].PIN);
+      let output = JSON.parse(res.text);
+      // console.log(output.items[0].PIN);
       return output.items[0].PIN;
       // console.log(output.items[0].PIN);
     })
     .then((PIN) => {
       let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
       superagent.get(getGISurl)
-        .then((res) =>
-          console.log(res.text))
+        .then((res) => {
+          let output = JSON.parse(res.text);
+          console.log(output.items[0])
+        })
     })
 }
 
 getKingCountyGISdata ("1718%2046th%20ave%20sw%20seattle%20wa%2098116");
-
-
-// function getKingCountyTaxData (PIN) {
-//   let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
-//   return superagent.get(getGISurl)
-//     .then(result => {
-//       let output = JSON.parse(result.text);
-//       console.log(output);
-//       // let GIStaxData =
-//     })
-// }
-
-
 
 
 // add  building to database from search form
