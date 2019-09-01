@@ -48,18 +48,18 @@ function Location(query, res) {
   this.id;
 }
 
-function Property(PIN, taxpayerName, jurisdiction, propName, presentUse, levyCode, address, appValue, numBuilding, numUnits, lotSqft) {
+function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
   this.PIN = PIN;
-  this.taxpayerName = taxpayerName;
-  this.jurisdiction = jurisdiction;
-  this.propName = propName;
-  this.presentUse = presentUse;
-  this.levyCode = levyCode;
-  this.address = address;
-  this.appValue = appValue;
-  this.numBuilding = numBuilding;
-  this.numUnits = numUnits;
-  this.lotSqft = lotSqft;
+  this.taxpayerName = TAXPAYERNAME;
+  this.jurisdiction = JURISDICTION;
+  this.propName = PROPNAME;
+  this.presentUse = PRESENTUSE;
+  this.levyCode = LEVYCODE;
+  this.address = ADDRESS;
+  this.appValue = APPVALUE;
+  this.numBuilding = NUMBUILDING;
+  this.numUnits = NUMUNITS;
+  this.lotSqft = LOTSQFT;
 }
 
 // function GISdata(query, response) {
@@ -166,7 +166,9 @@ function getKingCountyGISdata(location) {
       superagent.get(getGISurl)
         .then((res) => {
           let output = JSON.parse(res.text);
-          console.log(output.items[0])
+          const property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
+          
+          console.log(property)
         })
     })
 }
