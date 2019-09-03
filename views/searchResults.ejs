@@ -32,7 +32,29 @@
                 <h2>Address: <%= address%></h2>
 
                 <section class = "buildingImg">
-                    <img src = "<%= image %> " alt = "image of the building">
+                    <!-- street view -->
+                <div id="pano"></div>
+                
+                <script>
+            
+                  function initialize() {
+                   var fenway = {lat: <%= location.latitude %>, lng: <%=location.longitude %>};
+                    
+                    var panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('pano'), {
+                          position: fenway,
+                          pov: {
+                            heading: 34,
+                            pitch: 10
+                          }
+                        });
+                    map.setStreetView(panorama);
+                  }
+                </script>
+                <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVV8FTYcgbhNlopWvKXfYfSpyKXfa4X7g&callback=initialize">
+                </script>
+                <!-- street view -->
                 </section>
 
                 <section class = "buildingData">

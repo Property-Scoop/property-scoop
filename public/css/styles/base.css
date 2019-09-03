@@ -10,7 +10,12 @@ body{
    font-family: "Avenir Next", "Avenir", sans-serif;
    width: 100vw;
 }
-
+/* street view */
+ #pano {
+  height: 300px;
+  width: 600px;
+}
+/* street view */
 a{
     text-decoration: none;
     color: black;
@@ -111,10 +116,9 @@ footer{
     margin: 10px auto;
 }
 
-#searchResults .buildingImg{
-    width: 30%;
-    height: 10em;
-    border: 2px solid black;
+#searchResults #pano{
+   
+    
     margin:3% auto 2% auto;
 }
 
