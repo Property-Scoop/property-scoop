@@ -35,12 +35,34 @@
                     <img src = " " alt = "image of the building">
                 </section>
 
+
+<!-- {
+    "identifier": "PIN",
+    "items": [
+      {
+        "PIN": "0695000335",
+        "TAXPAYERNAME": "SELIG HOLDINGS COMPANY LLC",
+        "JURISDICTION": "SEATTLE",
+        "PROPNAME": "THIRD AND BROAD BLDG",
+        "PRESENTUSE": "Office Building",
+        "LEVYCODE": "0011",
+        "ADDRESS": "2901 3RD AVE 98121",
+        "APPVALUE": "73977000",
+        "NUMBUILDINGS": "",
+        "NUMUNITS": "",
+        "LOTSQFT": "63710"
+      }
+    ]
+  } -->
                 <section class = "buildingData">
                     <p>Owner's name: <%= propertyData.taxpayerName %></p>  
-                    <p>Building permit: TODO: Add permit data</p>
-                    <p>Year was built: TODO: Add Year Built</p>
+                    <p>Property Name: <%= propertyData.propName %></p>
+                    <!-- <p>Building permit: TODO: Add permit data</p> -->
+                    <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
+                    <p>Present Use: <%= propertyData.presentUse %></p>
+                    <!-- <p>Year was built: TODO: Add Year Built</p> -->
                     <p>Property value: $<%=propertyData.appValue %></p>
-                    <p>Lot Sq Feet: <%=propertyData.lotSqft %></p>
+                    <p>Lot Square Footage: <%=propertyData.lotSqft %>sq ft</p>
                     <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
 
                 </section>

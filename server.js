@@ -48,6 +48,25 @@ function Location(query, res) {
   this.id;
 }
 
+// {
+//   "identifier": "PIN",
+//   "items": [
+//     {
+//       "PIN": "0695000335",
+//       "TAXPAYERNAME": "SELIG HOLDINGS COMPANY LLC",
+//       "JURISDICTION": "SEATTLE",
+//       "PROPNAME": "THIRD AND BROAD BLDG",
+//       "PRESENTUSE": "Office Building",
+//       "LEVYCODE": "0011",
+//       "ADDRESS": "2901 3RD AVE 98121",
+//       "APPVALUE": "73977000",
+//       "NUMBUILDINGS": "",
+//       "NUMUNITS": "",
+//       "LOTSQFT": "63710"
+//     }
+//   ]
+// }
+
 // function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
 function Property(property) {
   this.PIN = property.PIN;
