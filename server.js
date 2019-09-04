@@ -1,6 +1,7 @@
 'use strict';
 
 //=====================Global Variables and appplication dependensies=================================//
+
 require('dotenv').config();
 
 // Load Application Dependencies
@@ -85,10 +86,9 @@ function searchToLatLong(request, response) {
       location.addLocation(request);
       
 
-      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`,
-      address:location.formatted_query,
-      // image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
+        address:location.formatted_query, 
+        location: location
       });
     })
     .catch(err => {handleError(err, response)})
@@ -109,9 +109,10 @@ function getLocation(req,res){
 
       if (location){
         //if exists send the object as response
-        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`,
-    location: location});
+        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
+          address:location.formatted_query, 
+          image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`,
+          location: location});
       }
 
       //if doesn't exists go to go to google api

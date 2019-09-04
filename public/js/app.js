@@ -18,4 +18,3 @@ $('#searchResults .submit').submit('click', function(){
     },
     1000);
 });
-
