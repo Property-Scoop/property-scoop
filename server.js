@@ -84,22 +84,17 @@ function searchToLatLong(request, response) {
       //envoke function to cache google location data to database 'locations'
       location.addLocation(request);
       
-      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`,
-      address:location.formatted_query,
-      // image:`https://maps.googleapis.com/maps/api/streetview?size=600x300&$&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=${process.env.GEOCODE_API_KEY}`
-      //`https://maps.googleapis.com/maps/api/js?key=${process.env.GEOCODE_API_KEY}&callback=${initMap}`
+      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap\
+        &markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
+      address:location.formatted_query, location: location
       });
+    
     })
     .catch(err => {handleError(err, response)})
 }
 
 
 //=======================================================================================//
-/*function initMap() {
-  let uluru = {lat: 47.608013, lng: -122.335167};
-  let marker = new google.maps.Marker({position: uluru, map: map});
-}*/
 
 
 //=======================================Ana's functions=================================//
@@ -114,7 +109,7 @@ function getLocation(req,res){
       if (location){
         //if exists send the object as response
         res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query});
+      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, location: location});
       }
 
       //if doesn't exists go to go to google api
