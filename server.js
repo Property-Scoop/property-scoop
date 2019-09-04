@@ -163,7 +163,7 @@ function getKingCountyGISdata(location) {
   superagent.get(getPIN)
     .then((res) => {
       let output = JSON.parse(res.text);
-      // console.log(output.items[0].PIN);
+      console.log(output.items[0].PIN);
       return output.items[0].PIN;
       // console.log(output.items[0].PIN);
     })
@@ -173,6 +173,7 @@ function getKingCountyGISdata(location) {
         .then((res) => {
           let output = JSON.parse(res.text);
           let property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
+          console.log(property);
           // return property;
         })
     })
