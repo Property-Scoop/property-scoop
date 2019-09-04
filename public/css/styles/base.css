@@ -111,12 +111,17 @@ footer{
     margin: 10px auto;
 }
 
-#searchResults .buildingImg{
-    width: 30%;
-    height: 10em;
-    border: 2px solid black;
+#searchResults #pano{
+   
+    
     margin:3% auto 2% auto;
 }
+/* street view  panorama*/
+#pano {
+  height: 500px;
+  width: 500px;
+}
+/* =================== */
 
 #searchResults .buildingData p{
     font-size: 2em;

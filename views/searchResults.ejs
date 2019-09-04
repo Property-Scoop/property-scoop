@@ -28,36 +28,64 @@
                 <div id = "displayMapContainer"> 
                     <img id ="map" src ="<%= locationData %>" alt="Map of search query">
                 </div> 
-              
-            <div class = "toggle">
-                <h2>Address: <%= address%></h2>
 
-                <section class = "buildingImg">
-                    <img src = " " alt = "image of the building">
-                </section>
+                <div class = "toggle">
+                    <h2>Address: <%= address%></h2>
 
-                <section class = "buildingData">
-                    <p>Owner's name: </p>  
-                    <p>Building permit:</p>
-                    <p>Year was built:</p>
-                    <p>Property value:</p>
-                    <p>Lot Sq Feet:</p>
-                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+                    <section class = "buildingImg">
+                        <!-- street view -->
+                    <div id="pano"></div>
+                    
+                    
+                    
+                    <!-- street view -->
+                    </section>
 
-                </section>
-                <section class = "buttons">
-                    <button id="save">Save Building</button>
-                    <button id="newSearch">New Search</button>
+                    <section class = "buildingData">
+                        <p>Owner's name: </p>  
+                        <p>Building permit:</p>
+                        <p>Year was built:</p>
+                        <p>Property value:</p>
+                        <p>Lot Sq Feet:</p>
+                        <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
 
-                </section>
-            </div>   
+                    </section>
+                    <section class = "buttons">
+                        <button id="save">Save Building</button>
+                        <button id="newSearch">New Search</button>
+
+                    </section>
+                </div>   
+
                       
             </main>
         </div>
+
         <footer>
-
                 <%- include partials/footer %>
+        </footer>
 
-         </footer>
+        <!-------------------street view ------------------------------->
+        <script>
+                
+            function initialize() {
+            var fenway = {lat: <%= location.latitude %>, lng: <%=location.longitude %>};
+                
+                var panorama = new google.maps.StreetViewPanorama(
+                    document.getElementById('pano'), {
+                    position: fenway,
+                    pov: {
+                        heading: 34,
+                        pitch: 10
+                    }
+                    });
+                map.setStreetView(panorama);
+            }
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=<%=process.env.GEOCODE_API_KEY%>&callback=initialize">
+        </script>
+        <!-- ---------------------------------- -->
+
     </body>
 </html> 
