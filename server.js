@@ -59,7 +59,7 @@ Location.prototype.addLocation = function (){
   return client.query(SQL, values)
     .then (result => {
       this.id = result.rows[0].id;
-      console.log(this.id);
+      //console.log(this.id);
     });
 };
 //=======================================================================================//
@@ -79,23 +79,27 @@ function searchToLatLong(request, response) {
 
   superagent.get(url)
     .then(result => {
-      console.log(result);
+      //console.log(result);
       const location = new Location(request.query.search, result);
 
       //envoke function to cache google location data to database 'locations'
       location.addLocation(request);
       
 
+
       response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
         address:location.formatted_query, 
         location: location
+
+    
       });
+    
     })
     .catch(err => {handleError(err, response)})
 }
 
-//=======================================================================================//
 
+//=======================================================================================//
 
 
 //=======================================Ana's functions=================================//
@@ -109,10 +113,12 @@ function getLocation(req,res){
 
       if (location){
         //if exists send the object as response
+
         res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
           address:location.formatted_query, 
           image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`,
           location: location});
+
       }
 
       //if doesn't exists go to go to google api
