@@ -48,18 +48,19 @@ function Location(query, res) {
   this.id;
 }
 
-function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
-  this.PIN = PIN;
-  this.taxpayerName = TAXPAYERNAME;
-  this.jurisdiction = JURISDICTION;
-  this.propName = PROPNAME;
-  this.presentUse = PRESENTUSE;
-  this.levyCode = LEVYCODE;
-  this.address = ADDRESS;
-  this.appValue = APPVALUE;
-  this.numBuilding = NUMBUILDING;
-  this.numUnits = NUMUNITS;
-  this.lotSqft = LOTSQFT;
+// function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
+function Property(property) {
+  this.PIN = property.PIN;
+  this.taxpayerName = property.TAXPAYERNAME;
+  this.jurisdiction = property.JURISDICTION;
+  this.propName = property.PROPNAME;
+  this.presentUse = property.PRESENTUSE;
+  this.levyCode = property.LEVYCODE;
+  this.address = property.ADDRESS;
+  this.appValue = property.APPVALUE;
+  this.numBuilding = property.NUMBUILDING;
+  this.numUnits = property.NUMUNITS;
+  this.lotSqft = property.LOTSQFT;
 }
 
 //function to add location data in database
@@ -81,33 +82,44 @@ function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE
 //=======================================Functions========================================//
 // ERROR HANDLER
 function handleError(err, res) {
-  console.error(err);
+  // console.error(err);
   if (res) res.status(500).send('Sorry, something went wrong');
 }
 
 function searchToLatLong(request, response) {
   //Define the URL for the GEOCODE API
-  console.log(response)
-  request.query.search = cleanAddress(request.query.search);
+  // console.log(response)
+  //request.query.search = cleanAddress(request.query.search);
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.search}&key=${process.env.GEOCODE_API_KEY}`;
-  console.log(`Google URL: ${url}`)
+  // console.log(`Google URL: ${url}`)
+  let propertydata;
   superagent.get(url)
     .then(result => {
-      //console.log(response.result);
+      console.log('###########', result.body.results[0].formatted_address);
       const location = new Location(request.query.search, result);
-      console.log(cleanAddress(location.mapURL[0].formatted_address));
+      const cleanedAddress = cleanAddress(result.body.results[0].formatted_address);
+      // console.log(cleanAddress(location.mapURL[0].formatted_address));
       //envoke function to cache google location data to database 'locations'
       // location.addLocation(request);
-      getKingCountyGISdata(encodeURIComponent(request.query.search));
-      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
-      &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query,
-      });
+      let urlGIS = encodeURIComponent(cleanedAddress)
+      getKingCountyGISdata(urlGIS)
+        .then(thing => {
+          response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude}%2c%20${location.longitude}&zoom=17&size=600x300&maptype=roadmap
+        &key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, propertyData: thing})
+        })
+      // .catch(err => {handleError(err, response)})
+      console.log('Property inside Lat Long: ', propertydata);
+
     })
-    // .catch(err => {handleError(err, res)})
+
+  // console.log(getKingCountyGISdata(encodeURIComponent(request.query.search)))
+    .catch(err => {handleError(err, response)})
 }
 
 // Remove Apartment Numbers, commas, and country from input address
 // AND replace spaces with GIS compatible URL encoding
+// TODO: Remove Suite 100A from http://localhost:3000/searchResults?search=panera+seattle
+//        => 1620 Broadway Suite 100A Seattle WA 98122
 function cleanAddress(address) {
   let cleaned = [];
   for (let x of address.split(' ')) {
@@ -159,23 +171,34 @@ function cleanAddress(address) {
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
-  console.log(`GIS Input Location: ${location} ${getPIN}`);
-  superagent.get(getPIN)
+  // console.log(`GIS Input Location: ${location} ${getPIN}`);
+  let property;
+  return superagent.get(getPIN)
     .then((res) => {
+      // console.log('getKingCountyGISdata first then: ', res);
       let output = JSON.parse(res.text);
-      console.log(output.items[0].PIN);
-      return output.items[0].PIN;
-      // console.log(output.items[0].PIN);
+      // console.log('PIN: ', output.items[0].PIN);
+      let PIN = output.items[0].PIN;
+      return PIN;
     })
-    .then((PIN) => {
-      let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${PIN}`;
-      superagent.get(getGISurl)
-        .then((res) => {
-          let output = JSON.parse(res.text);
-          let property = new Property (output.items[0].PIN, output.items[0].TAXPAYERNAME, output.items[0].JURISDICTION, output.items[0].PROPNAME, output.items[0].PRESENTUSE, output.items[0].LEVYCODE, output.items[0].ADDRESS, output.items[0].APPVALUE, output.items[0].NUMBUILDINGS, output.items[0].NUMUNITS, output.items[0].LOTSQFT);
-          console.log(property);
-          // return property;
-        })
+    .then(result => {
+      // console.log(result)
+      let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
+      // console.log(getGISurl);
+      return superagent.get(getGISurl)
+    })
+    .then(response => {
+      // console.log(response.text);
+      let output = JSON.parse(response.text);
+      // console.log(output);
+
+      property = new Property (output.items[0]);
+      // console.log('Property: ', property);
+      return property;
+    // })
+    // .then(res33 => {
+    //   console.log('res33 data: ', res33)
+    //   return res33;
     })
 }
 
