@@ -50,6 +50,20 @@ function Location(query, res) {
   
 }
 
+function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
+  this.PIN = PIN;
+  this.taxpayerName = TAXPAYERNAME;
+  this.jurisdiction = JURISDICTION;
+  this.propName = PROPNAME;
+  this.presentUse = PRESENTUSE;
+  this.levyCode = LEVYCODE;
+  this.address = ADDRESS;
+  this.appValue = APPVALUE;
+  this.numBuilding = NUMBUILDING;
+  this.numUnits = NUMUNITS;
+  this.lotSqft = LOTSQFT;
+}
+
 
 //function to add location data in database
 Location.prototype.addLocation = function (){
@@ -100,6 +114,7 @@ function searchToLatLong(request, response) {
       console.log(location.mapURL);
       const cleanedAddress = cleanAddress(result.body.results[0].formatted_address);
       location.addLocation(request);
+
       let urlGIS = encodeURIComponent(cleanedAddress)
       getKingCountyGISdata(urlGIS)
         .then(thing => {
@@ -139,6 +154,7 @@ function getKingCountyGISdata(location) {
       let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
       // console.log(getGISurl);
       return superagent.get(getGISurl)
+
     })
 
     .then(response => {
@@ -168,6 +184,7 @@ function getLocation(req,res){
       //if exists send the object as response
 
       if (location){
+
         const cleanedAddress = cleanAddress(location.formatted_query);
         // location.addLocation(request);
         let urlGIS = encodeURIComponent(cleanedAddress)
@@ -220,5 +237,3 @@ let lookupLocation = (location) =>{
 //     });
 // }
 
-
-//=======================================================================================//
