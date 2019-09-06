@@ -295,3 +295,26 @@ a{
 
 
 /* ==================================================================== */
+/*about us page.*/
+
+.aboutimg {
+  border-radius: 50%;
+  height: 25em;
+  width: 25em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aboutname {
+  font-weight: bolder;
+}
+
+.aboutparagraph {
+  font-size: 13px;
+} 
+
+.herokuicon {
+  width: 3em;
+}
+

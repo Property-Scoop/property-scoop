@@ -3,10 +3,10 @@
 Property-Scoop is an mobile first website that when an address is inputed, the google map of the location and construction information about the building is displayed.
  
 ## Team members:
-Aaron Imbrock 206-554-9869
-Anastasia Lebedeva 206-747-4498
-Ludwin De Leon 206-612-7242
-Ryan Sanders 706-755-0124
+Aaron Imbrock 
+Anastasia Lebedeva
+Ludwin De Leon 
+Ryan Sanders 
  
 ## Trello:
 https://trello.com/b/0FrQKLY4/location-data-app
