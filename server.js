@@ -47,6 +47,7 @@ function Location(query, res) {
   this.longitude = res.body.results[0].geometry.location.lng;
   this.mapURL = res.body.results
   this.id;
+  
 }
 
 function Property(PIN,TAXPAYERNAME, JURISDICTION, PROPNAME, PRESENTUSE, LEVYCODE, ADDRESS, APPVALUE, NUMBUILDING, NUMUNITS, LOTSQFT) {
@@ -76,6 +77,22 @@ Location.prototype.addLocation = function (){
       //console.log(this.id);
     });
 };
+// Function constructor for kc api
+function Property(property) {
+  this.PIN = (property.PIN) ? property.PIN : 'No data';
+  this.taxpayerName = (property.TAXPAYERNAME) ? property.TAXPAYERNAME : 'No data';
+  this.jurisdiction = (property.JURISDICTION) ? property.JURISDICTION : 'No data';
+  this.propName = (property.PROPNAME) ? property.PROPNAME : 'No data';
+  this.presentUse = (property.PRESENTUSE) ? property.PRESENTUSE : 'No data';
+  this.levyCode = (property.LEVYCODE) ? property.LEVYCODE : 'No data';
+  this.address = (property.ADDRESS) ? property.ADDRESS : 'No data';
+  this.appValue = (property.APPVALUE) ? '$' + property.APPVALUE : 'No data';
+  this.numBuilding = (property.NUMBUILDING) ? property.NUMBUILDING : 'No data';
+  this.numUnits = (property.NUMUNITS) ? property.NUMUNITS : 'No data';
+  this.lotSqft = (property.LOTSQFT) ? property.LOTSQFT + 'sq ft': 'No data';
+}
+
+
 //=======================================================================================//
 
 
@@ -93,25 +110,67 @@ function searchToLatLong(request, response) {
 
   superagent.get(url)
     .then(result => {
-      //console.log(result);
       const location = new Location(request.query.search, result);
-
-      //envoke function to cache google location data to database 'locations'
+      console.log(location.mapURL);
+      const cleanedAddress = cleanAddress(result.body.results[0].formatted_address);
       location.addLocation(request);
 
-
-
-      response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
-        address:location.formatted_query,
-        location: location
-      });
-
+      let urlGIS = encodeURIComponent(cleanedAddress)
+      getKingCountyGISdata(urlGIS)
+        .then(thing => {
+          response.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
+            address:location.formatted_query,
+            location: location, propertyData: thing
+          });
+        })
+        .catch(err => {handleError(err, response)})
     })
-    .catch(err => {handleError(err, response)})
 }
 
+function cleanAddress(address) {
+  let cleaned = [];
+  for (let x of address.split(' ')) {
+    if (!x.includes('#') && (!x.includes('USA'))) {
+      cleaned.push(x.replace(/,/,''));
+    }
+  }
+  return cleaned.join(' ');
+}
 
-//=======================================================================================//
+function getKingCountyGISdata(location) {
+  let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
+  // console.log(`GIS Input Location: ${location} ${getPIN}`);
+  let property;
+  return superagent.get(getPIN)
+    .then((res) => {
+      // console.log('getKingCountyGISdata first then: ', res);
+      let output = JSON.parse(res.text);
+      // console.log('PIN: ', output.items[0].PIN);
+      let PIN = output.items[0].PIN;
+      return PIN;
+    })
+    .then(result => {
+      // console.log(result)
+      let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
+      // console.log(getGISurl);
+      return superagent.get(getGISurl)
+
+    })
+
+    .then(response => {
+      let output = JSON.parse(response.text);
+      // console.log(output);
+
+      property = new Property (output.items[0]);
+      return property;
+    })
+    .catch(err => {
+      property = new Property ("no data");
+      console.log(err);
+      return property;
+      
+    })
+}
 
 
 //=======================================Ana's functions=================================//
@@ -122,16 +181,18 @@ function getLocation(req,res){
   //check if this lcoation exist in database
   lookupLocation(req.query.search)
     .then(location => {
+      //if exists send the object as response
 
       if (location){
-        //if exists send the object as response
 
-        res.render('searchResults', {locationData: `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`,
-          address:location.formatted_query,
-          image:`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.latitude},${location.longitude}&fov=90&heading=235&pitch=10&key=${process.env.GEOCODE_API_KEY}`,
-          location: location});
-
+        const cleanedAddress = cleanAddress(location.formatted_query);
+        // location.addLocation(request);
+        let urlGIS = encodeURIComponent(cleanedAddress)
+        getKingCountyGISdata(urlGIS)
+          .then(thing => {
+            res.render('searchResults', {locationData:  `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, propertyData: thing, location: location})})
       }
+          
 
       //if doesn't exists go to go to google api
       else
