@@ -28,6 +28,7 @@ app.use(express.static('./public/../'));
 app.use(express.urlencoded({extended:true}));
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 
+let property;
 //=====================================ROUTES============================================//
 // API Routes
 app.get('/', function (req, res) {
@@ -35,9 +36,16 @@ app.get('/', function (req, res) {
 });
 app.get('/aboutUs', function (req, res) {
   res.render('aboutUs');
-})
+});
 app.get('/searchResults', getLocation);
 
+app.get('/savedBuildings/:id', getBuildingDetails);
+
+app.post('/savedBuildings', postBuilding);
+
+app.get('/savedBuildings', function(req, res){
+  res.render('savedBuildings');
+});
 //=======================================Constructor Functions===========================//
 // // constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
@@ -60,7 +68,6 @@ Location.prototype.addLocation = function (){
   return client.query(SQL, values)
     .then (result => {
       this.id = result.rows[0].id;
-      //console.log(this.id);
     });
 };
 // Function constructor for kc api
@@ -97,7 +104,6 @@ function searchToLatLong(request, response) {
   superagent.get(url)
     .then(result => {
       const location = new Location(request.query.search, result);
-      console.log(location.mapURL);
       const cleanedAddress = cleanAddress(result.body.results[0].formatted_address);
       location.addLocation(request);
       let urlGIS = encodeURIComponent(cleanedAddress)
@@ -124,20 +130,19 @@ function cleanAddress(address) {
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
-  // console.log(`GIS Input Location: ${location} ${getPIN}`);
-  let property;
+ 
   return superagent.get(getPIN)
     .then((res) => {
-      // console.log('getKingCountyGISdata first then: ', res);
+    
       let output = JSON.parse(res.text);
-      // console.log('PIN: ', output.items[0].PIN);
+     
       let PIN = output.items[0].PIN;
       return PIN;
     })
     .then(result => {
-      // console.log(result)
+     
       let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
-      // console.log(getGISurl);
+      
       return superagent.get(getGISurl)
     })
 
@@ -199,26 +204,45 @@ let lookupLocation = (location) =>{
 };
 
 
-// add  building to database from search form
-// fix the order and value names . and in form we will have only note al other things will be as a paragraphs
+// add  property data fron King County API to database from search form
 
 
-// function postBuilding(request, response){
 
-//   const SQL = `INSERT INTO buildings(image_url, owner, permit_num, year, description, value, note, sq_feet) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
-//   const values = [request.body.addBuilding[1], request.body.addBuilding[0], request.body.addBuilding[3], request.body.addBuilding[5]=== './public/styles/book-icon-139.png' ? `../../../${request.body.addBooks[5]}` : request.body.addBooks[5], request.body.addBooks[2], request.body.addBooks[4]];
+function postBuilding(request, response){
 
-//   return client.query(SQL, values)
-//     .then(res=>{
-//       if(res.rowCount >0){
-//         response.redirect(`/building/${res.rows[0].id}`);
-//       }
+  const SQL = `INSERT INTO buildings (pin, taxpayer_name, prop_name, jurisdiction, present_use, app_value, lot_sqft, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`;
+  console.log(request.body.addBuilding);
 
-//     })
-//     .catch(error => {
-//       errorHandle(error, response);
-//     });
-// }
+  const values = [request.body.addBuilding[0], request.body.addBuilding[1], request.body.addBuilding[2], request.body.addBuilding[3], request.body.addBuilding[4], request.body.addBuilding[5], request.body.addBuilding[6], request.body.addBuilding[7]];
 
+  return client.query(SQL, values)
+    .then(res=>{
+      if(res.rowCount >0){
+        response.redirect(`savedBuildings/${res.rows[0].id}`);
+      }
 
+    })
+    .catch(err => {handleError(err, response)});
+}
+
+//get details about single building
+function getBuildingDetails(request, response){
+  let id = request.params.id;
+  console.log(request.params.id);
+  let SQL = 'SELECT * FROM buildings WHERE id=$1;';
+
+  client.query(SQL, [id])
+    .then(res=> {
+      if(res.rowCount > 0) {
+        console.log(res.rows);
+        response.render('showBuilding', {propertyData: res.rows[0]});
+      }
+
+      else {
+        handleError(res, response);
+      }
+    })
+
+    .catch(err => {handleError(err, response)});
+}
 //=======================================================================================//

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+   <head>
+    <%- include partials/head %>
+    </head>
+
+    <body id="indexPage">
+       
+
+        <%- include partials/nav%>
+
+        
+        <div class = "container">
+            <header>
+                <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+            </header>
+
+            <main>
+                <h2>Address: <%= propertyData.address%></h2>
+                <section class = "buildingData">
+                    <p>Owner's name: <%= propertyData.taxpayer_name %></p>  
+                    <p>Property Name: <%= propertyData.prop_name %></p>
+                    <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
+                    <p>Present Use: <%= propertyData.present_use %></p>
+                    <p>Property value: <%=propertyData.app_value %></p>
+                    <p>Lot Square Footage: <%=propertyData.lot_sqft %></p>
+                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+
+                </section>
+            </main>
+        
+        </div>  
+
+        <footer>
+
+            <%- include partials/footer %>
+
+        </footer>
+            
+    
+    </body>
+</html>
