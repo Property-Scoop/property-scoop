@@ -25,12 +25,14 @@
                     <button type="submit" class="submit">Search</button>
                 </form>
                 
+                <h2 class="toggle"><%= address%></h2>
+
                 <div id = "displayMapContainer"> 
                     <img id ="map" src ="<%= locationData %>" alt="Map of search query">
                 </div> 
 
                 <div class = "toggle">
-                    <h2>Address: <%= address%></h2>
+                    
 
                     <section class = "buildingImg">
                         <!-- street view -->
@@ -44,18 +46,36 @@
                     <section class = "buildingData">
                         <p>Owner's name: <%= propertyData.taxpayerName %></p>  
                         <p>Property Name: <%= propertyData.propName %></p>
-                        <!-- <p>Building permit: TODO: Add permit data</p> -->
                         <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
                         <p>Present Use: <%= propertyData.presentUse %></p>
-                        <!-- <p>Year was built: TODO: Add Year Built</p> -->
                         <p>Property value: <%=propertyData.appValue %></p>
                         <p>Lot Square Footage: <%=propertyData.lotSqft %></p>
                         <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
     
                     </section>
                     <section class = "buttons">
-                        <button id="save">Save Building</button>
-                        <button id="newSearch">New Search</button>
+                            <form id="buildingDetails" action="savedBuildings" method = "POST" >
+                                
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.PIN %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.taxpayerName %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.propName %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.jurisdiction %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.presentUse  %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.appValue %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= propertyData.lotSqft %>">
+
+                                <input class="buildingForm" type="hidden" name="addBuilding" value="<%= address %>">
+
+                                <button id ="save" type="submit">Save Building</button>
+                            </form>
+                        
+                            <button id="newSearch">New Search</button>
 
                     </section>
                 </div>   
