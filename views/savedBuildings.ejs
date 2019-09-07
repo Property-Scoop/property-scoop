@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+   <head>
+    <%- include partials/head %>
+    </head>
+
+    <body id="savedBuildingsPage">
+       
+
+           <%- include partials/nav%>
+
+        
+            <div class = "container">
+                <header>
+                    <img id = "logo" src="../public/css/img/logo1.png" alt='logo'>
+                    
+                </header>
+            
+                <main>
+                        <h3>SAVED BUILDINGS: <%=  buildingsDb.length %></h2>   
+                        <ul>
+                            <% buildingsDb.forEach(item => { %>
+                                <li>
+                                    <h2><%= item.address%></h2>
+                                    <p>Owner's name: <%= item.taxpayer_name %></p>  
+                                    <p>Property Name: <%= item.prop_name %></p>
+                                    <p>Jurisdiction: <%= item.jurisdiction %></p>
+                                    <p>Present Use: <%= item.present_use %></p>
+                                    <p>Property value: <%=item.app_value %></p>
+                                    <p>Lot Square Footage: <%=item.lot_sqft %></p>
+                                    <form action="savedBuildings/<%=item.id %>" method="POST">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="hidden" name="id" value="<%= item.id %>">
+                                        <button class = "delete">Delete</button>
+                                    </form>
+                                </li>
+                                
+                                <% }) %>
+                                
+                            </ul>
+                </main>
+            </div>
+        <footer>
+                
+                <%- include partials/footer %>
+
+            </footer>
+            
+    
+    </body>
+</html>
