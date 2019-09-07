@@ -322,7 +322,9 @@ a{
 #showBuildingPage .buttons{
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
+
 
 #showBuildingPage .container{
   margin-bottom: 38vh;
