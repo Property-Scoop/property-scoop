@@ -20,7 +20,40 @@
             <main>
                 <h2><%= propertyData.address%></h2>
                 <section class = "buildingData">
-                        <%- include partials/table%>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">PROPERTY DETAILS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Owner's name:</td>
+                                <td><%= propertyData.taxpayer_name %></td>
+                            </tr>
+                            <tr>
+                                <td>Property Name:</td>
+                                <td><%= propertyData.prop_name %></td>
+                            </tr>
+
+                            <tr>
+                                <td>Jurisdiction:</td>
+                                <td><%= propertyData.jurisdiction %></td>
+                            </tr>
+                            <tr>
+                                <td>Present Use:</td>
+                                <td><%= propertyData.present_use %></td>
+                            </tr>
+                            <tr>
+                                <td>Property value:</td>
+                                <td><%=propertyData.app_value %></td>
+                            </tr>
+                            <tr>
+                                <td>Lot Square Footage:</td>
+                                <td><%=propertyData.lot_sqft %></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </section>
                 <section class="buttons">
                         <form action="/" method="GET">

@@ -259,7 +259,7 @@ function getSavedBuildings(req, res){
 
     .then(result => {
       if(result.rowCount > 0 ) {
-        res.render('savedBuildings', {buildingsDb: result.rows});
+        res.render('savedBuildings', {propertyData: result.rows});
       }
     });
 }
