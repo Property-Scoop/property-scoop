@@ -20,15 +20,8 @@
             <main>
                 <h2><%= propertyData.address%></h2>
                 <section class = "buildingData">
-                    <p>Owner's name: <%= propertyData.taxpayer_name %></p>  
-                    <p>Property Name: <%= propertyData.prop_name %></p>
-                    <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
-                    <p>Present Use: <%= propertyData.present_use %></p>
-                    <p>Property value: <%=propertyData.app_value %></p>
-                    <p>Lot Square Footage: <%=propertyData.lot_sqft %></p>
-                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
-
-                </section>
+                        <%- include partials/table%>
+                    </section>
                 <section class="buttons">
                         <form action="/" method="GET">
                             <button>New Search</button>
