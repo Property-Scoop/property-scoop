@@ -19,17 +19,47 @@
                 </header>
             
                 <main>
-                        <h3>SAVED BUILDINGS: <%=  buildingsDb.length %></h2>   
+                        <h3>SAVED BUILDINGS: <%=  propertyData.length %></h2>   
                         <ul>
-                            <% buildingsDb.forEach(item => { %>
+                            <% propertyData.forEach(item => { %>
                                 <li>
                                     <h2><%= item.address%></h2>
-                                    <p>Owner's name: <%= item.taxpayer_name %></p>  
-                                    <p>Property Name: <%= item.prop_name %></p>
-                                    <p>Jurisdiction: <%= item.jurisdiction %></p>
-                                    <p>Present Use: <%= item.present_use %></p>
-                                    <p>Property value: <%=item.app_value %></p>
-                                    <p>Lot Square Footage: <%=item.lot_sqft %></p>
+                                    <section class = "buildingData">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">PROPERTY DETAILS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Owner's name:</td>
+                                                    <td><%= item.taxpayer_name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Property Name:</td>
+                                                    <td><%= item.prop_name %></td>
+                                                </tr>
+        
+                                                <tr>
+                                                    <td>Jurisdiction:</td>
+                                                    <td><%= item.jurisdiction %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Present Use:</td>
+                                                    <td><%= item.present_use %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Property value:</td>
+                                                    <td><%=item.app_value %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Lot Square Footage:</td>
+                                                    <td><%=item.lot_sqft %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </section>
                                     <form action="savedBuildings/<%=item.id %>" method="POST">
                                         <input type="hidden" name="_method" value="delete">
                                         <input type="hidden" name="id" value="<%= item.id %>">

@@ -20,15 +20,41 @@
             <main>
                 <h2><%= propertyData.address%></h2>
                 <section class = "buildingData">
-                    <p>Owner's name: <%= propertyData.taxpayer_name %></p>  
-                    <p>Property Name: <%= propertyData.prop_name %></p>
-                    <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
-                    <p>Present Use: <%= propertyData.present_use %></p>
-                    <p>Property value: <%=propertyData.app_value %></p>
-                    <p>Lot Square Footage: <%=propertyData.lot_sqft %></p>
-                    <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">PROPERTY DETAILS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Owner's name:</td>
+                                <td><%= propertyData.taxpayer_name %></td>
+                            </tr>
+                            <tr>
+                                <td>Property Name:</td>
+                                <td><%= propertyData.prop_name %></td>
+                            </tr>
 
-                </section>
+                            <tr>
+                                <td>Jurisdiction:</td>
+                                <td><%= propertyData.jurisdiction %></td>
+                            </tr>
+                            <tr>
+                                <td>Present Use:</td>
+                                <td><%= propertyData.present_use %></td>
+                            </tr>
+                            <tr>
+                                <td>Property value:</td>
+                                <td><%=propertyData.app_value %></td>
+                            </tr>
+                            <tr>
+                                <td>Lot Square Footage:</td>
+                                <td><%=propertyData.lot_sqft %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </section>
                 <section class="buttons">
                         <form action="/" method="GET">
                             <button>New Search</button>
