@@ -70,6 +70,8 @@ function Location(query, res) {
   this.id;
 }
 
+
+
 //function to add location data in database
 Location.prototype.addLocation = function (){
 
@@ -117,6 +119,7 @@ function searchToLatLong(request, response) {
       const location = new Location(request.query.search, result);
       const cleanedAddress = cleanAddress(result.body.results[0].formatted_address);
       location.addLocation(request);
+
       let urlGIS = encodeURIComponent(cleanedAddress)
       getKingCountyGISdata(urlGIS)
         .then(thing => {
@@ -155,6 +158,7 @@ function getKingCountyGISdata(location) {
       let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
 
       return superagent.get(getGISurl)
+
     })
 
     .then(response => {
@@ -180,6 +184,7 @@ function getLocation(req,res){
       //if exists send the object as response
 
       if (location){
+
         const cleanedAddress = cleanAddress(location.formatted_query);
         // location.addLocation(request);
         let urlGIS = encodeURIComponent(cleanedAddress)
@@ -237,6 +242,7 @@ function getBuildingDetails(request, response){
         response.render('showBuilding', {propertyData: res.rows[0]});
       }
 
+
       else {
         handleError(res, response);
       }
@@ -268,3 +274,4 @@ function deleteBuilding(request, response){
     .then(response.redirect('/savedBuildings'))
     .catch(err => {handleError(err, response)});
 }
+
