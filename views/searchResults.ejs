@@ -42,16 +42,8 @@
                     
                     <!-- street view -->
                     </section>
-
                     <section class = "buildingData">
-                        <p>Owner's name: <%= propertyData.taxpayerName %></p>  
-                        <p>Property Name: <%= propertyData.propName %></p>
-                        <p>Jurisdiction: <%= propertyData.jurisdiction %></p>
-                        <p>Present Use: <%= propertyData.presentUse %></p>
-                        <p>Property value: <%=propertyData.appValue %></p>
-                        <p>Lot Square Footage: <%=propertyData.lotSqft %></p>
-                        <p id = "smallNote">*Lot lines are approximate. Not for legal use.</p>
-    
+                        <%- include partials/table%>
                     </section>
                     <section class = "buttons">
                             <form id="buildingDetails" action="savedBuildings" method = "POST" >
