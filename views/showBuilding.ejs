@@ -6,7 +6,7 @@
     <%- include partials/head %>
     </head>
 
-    <body id="indexPage">
+    <body id="showBuildingPage">
        
 
         <%- include partials/nav%>
@@ -18,7 +18,7 @@
             </header>
 
             <main>
-                <h2>Address: <%= propertyData.address%></h2>
+                <h2><%= propertyData.address%></h2>
                 <section class = "buildingData">
                     <p>Owner's name: <%= propertyData.taxpayer_name %></p>  
                     <p>Property Name: <%= propertyData.prop_name %></p>

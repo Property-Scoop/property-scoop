@@ -43,11 +43,12 @@ app.get('/savedBuildings/:id', getBuildingDetails);
 
 app.post('/savedBuildings', postBuilding);
 
-app.get('/savedBuildings', function(req, res){
-  res.render('savedBuildings');
-});
+app.get('/savedBuildings', getSavedBuildings);
+
+
 //=======================================Constructor Functions===========================//
-// // constructor function to buld a city object instances, paths based on the geo.json file
+
+//constructor function to buld a city object instances, paths based on the geo.json file
 function Location(query, res) {
   this.search_query = query;
   this.formatted_query = res.body.results[0].formatted_address;
@@ -55,9 +56,7 @@ function Location(query, res) {
   this.longitude = res.body.results[0].geometry.location.lng;
   this.mapURL = res.body.results
   this.id;
-  
 }
-
 
 //function to add location data in database
 Location.prototype.addLocation = function (){
@@ -70,27 +69,27 @@ Location.prototype.addLocation = function (){
       this.id = result.rows[0].id;
     });
 };
-// Function constructor for kc api
+
+// Function constructor for King County api
 function Property(property) {
   this.PIN = (property.PIN) ? property.PIN : 'No data';
   this.taxpayerName = (property.TAXPAYERNAME) ? property.TAXPAYERNAME : 'No data';
   this.jurisdiction = (property.JURISDICTION) ? property.JURISDICTION : 'No data';
   this.propName = (property.PROPNAME) ? property.PROPNAME : 'No data';
   this.presentUse = (property.PRESENTUSE) ? property.PRESENTUSE : 'No data';
-  this.levyCode = (property.LEVYCODE) ? property.LEVYCODE : 'No data';
-  this.address = (property.ADDRESS) ? property.ADDRESS : 'No data';
+  // this.levyCode = (property.LEVYCODE) ? property.LEVYCODE : 'No data';
+  // this.address = (property.ADDRESS) ? property.ADDRESS : 'No data';
   this.appValue = (property.APPVALUE) ? '$' + property.APPVALUE : 'No data';
-  this.numBuilding = (property.NUMBUILDING) ? property.NUMBUILDING : 'No data';
-  this.numUnits = (property.NUMUNITS) ? property.NUMUNITS : 'No data';
+  // this.numBuilding = (property.NUMBUILDING) ? property.NUMBUILDING : 'No data';
+  // this.numUnits = (property.NUMUNITS) ? property.NUMUNITS : 'No data';
   this.lotSqft = (property.LOTSQFT) ? property.LOTSQFT + 'sq ft': 'No data';
 }
-
 
 //=======================================================================================//
 
 
-
 //=======================================Functions========================================//
+
 // ERROR HANDLER
 function handleError(err, res) {
   console.error(err);
@@ -130,19 +129,19 @@ function cleanAddress(address) {
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
- 
+
   return superagent.get(getPIN)
     .then((res) => {
-    
+
       let output = JSON.parse(res.text);
-     
+
       let PIN = output.items[0].PIN;
       return PIN;
     })
     .then(result => {
-     
+
       let getGISurl = `https://gismaps.kingcounty.gov/parcelviewer2/pvinfoquery.ashx?pin=${result}`;
-      
+
       return superagent.get(getGISurl)
     })
 
@@ -154,15 +153,12 @@ function getKingCountyGISdata(location) {
       return property;
     })
     .catch(err => {
-      property = new Property ("no data");
+      property = new Property ('no data');
       console.log(err);
       return property;
-      
+
     })
 }
-
-
-//=======================================Ana's functions=================================//
 
 //route to handle user request and send the response from our database or GOOGLE
 function getLocation(req,res){
@@ -180,7 +176,6 @@ function getLocation(req,res){
           .then(thing => {
             res.render('searchResults', {locationData:  `https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${location.latitude}%2c%20${location.longitude}&key=${process.env.GEOCODE_API_KEY}`, address:location.formatted_query, propertyData: thing, location: location})})
       }
-          
 
       //if doesn't exists go to go to google api
       else
@@ -203,11 +198,7 @@ let lookupLocation = (location) =>{
     });
 };
 
-
 // add  property data fron King County API to database from search form
-
-
-
 function postBuilding(request, response){
 
   const SQL = `INSERT INTO buildings (pin, taxpayer_name, prop_name, jurisdiction, present_use, app_value, lot_sqft, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`;
@@ -228,6 +219,7 @@ function postBuilding(request, response){
 //get details about single building
 function getBuildingDetails(request, response){
   let id = request.params.id;
+  console.log(id);
   console.log(request.params.id);
   let SQL = 'SELECT * FROM buildings WHERE id=$1;';
 
@@ -245,4 +237,19 @@ function getBuildingDetails(request, response){
 
     .catch(err => {handleError(err, response)});
 }
-//=======================================================================================//
+
+
+function getSavedBuildings(req, res){
+  let SQL = `SELECT * FROM buildings`;
+
+  return client.query(SQL)
+
+    .then(result => {
+      // console.log(result);
+      if(result.rowCount > 0 ) {
+        // console.log("results:", result);
+        res.render('savedBuildings', {buildingsDb: result.rows});
+      }
+    });
+}
+

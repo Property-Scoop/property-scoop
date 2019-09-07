@@ -34,7 +34,7 @@ footer{
 
 
 /* ======================LOGO======================== */
-#searchResults #logo{
+#searchResults #logo, #savedBuildingsPage #logo, #showBuildingPage #logo{
     margin-top:5vh;
     width: 20vh;
 }
@@ -83,7 +83,7 @@ footer{
 }
 
 #indexPage form button{
-  margin-bottom: 38vh;
+  margin-bottom: 36vh;
 
 }
 
@@ -99,7 +99,7 @@ footer{
     height: 400px;  /* The height is 400 pixels */
     width: 75%;  /* The width is the width of the web page */
     border: 2px dotted black;
-    margin: 3% auto 3% auto;
+    margin: 3% auto 2% auto;
 }
 
 
@@ -111,18 +111,16 @@ footer{
     margin: 10px auto;
 }
 
-#searchResults #pano{
-   
-    
+#searchResults #pano{ 
     margin:3% auto 2% auto;
+    height: 25vh;
+    width: 75%; 
 }
-/* street view  panorama*/
-#pano {
-  height: 500px;
-  width: 500px;
-}
-/* =================== */
 
+
+#searchResults .buildingData{
+  margin-top: 40px;
+}
 #searchResults .buildingData p{
     font-size: 2em;
 }
@@ -296,3 +294,41 @@ a{
 
 
 /* ==================================================================== */
+
+
+
+/* ===================savedBuildingsPage============================ */
+#savedBuildingsPage h3{
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  color: rgb(177, 87, 14);
+  letter-spacing: 2px;
+}
+
+#savedBuildingsPage h2{
+  font-size: 1.5em;
+  font-weight: bold;
+  color:rgb(48, 45, 45);
+  width: 80vw;
+  margin: 10px auto;
+}
+
+#savedBuildingsPage li{
+  margin:0px auto 50px auto;
+  width: 80%;
+ 
+  
+}
+
+/* ================================================================== */
+
+#showBuildingPage h2{
+  font-size: 1.5em;
+  font-weight: bold;
+  color:rgb(48, 45, 45);
+  width: 80vw;
+  margin: 10px auto;
+
+}
