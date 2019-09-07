@@ -12,10 +12,10 @@ body{
 }
 
 a{
-    text-decoration: none;
-    color: black;
-    font-size: 1em;
-    line-height: 1.5em;
+  text-decoration: none;
+  color: black;
+  font-size: 1em;
+  line-height: 1.5em;
 }
 
 a:hover{
@@ -296,3 +296,32 @@ a{
 
 
 /* ==================================================================== */
+/*about us page.*/
+
+.aboutimg {
+  border-radius: 50%;
+  height: 25em;
+  width: 25em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aboutname {
+  font-weight: bolder;
+}
+
+.aboutparagraph {
+  font-size: 13px;
+  width: 80%;
+  margin: auto;
+  text-align: justify;
+  text-justify: inter-word;
+} 
+
+.herokuicon {
+  width: 3em;
+}
+ h1 {
+   font-weight: bolder;
+ }
