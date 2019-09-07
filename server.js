@@ -28,7 +28,18 @@ app.use(express.static('./public/../'));
 app.use(express.urlencoded({extended:true}));
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 
-let property;
+const methodOverride = require('method-override');
+
+//method override allows us to put or delete forms
+app.use(methodOverride((request, response)=> {
+  if(request.body && (typeof request.body === 'object') && ('_method' in request.body)){
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}));
+
+
 //=====================================ROUTES============================================//
 // API Routes
 app.get('/', function (req, res) {
@@ -45,6 +56,7 @@ app.post('/savedBuildings', postBuilding);
 
 app.get('/savedBuildings', getSavedBuildings);
 
+app.delete('/savedBuildings/:id', deleteBuilding);
 
 //=======================================Constructor Functions===========================//
 
@@ -129,7 +141,7 @@ function cleanAddress(address) {
 
 function getKingCountyGISdata(location) {
   let getPIN = `https://gismaps.kingcounty.gov/parcelviewer2/addSearchHandler.ashx?add=${location}`;
-
+  let property;
   return superagent.get(getPIN)
     .then((res) => {
 
@@ -147,7 +159,6 @@ function getKingCountyGISdata(location) {
 
     .then(response => {
       let output = JSON.parse(response.text);
-      // console.log(output);
 
       property = new Property (output.items[0]);
       return property;
@@ -202,7 +213,6 @@ let lookupLocation = (location) =>{
 function postBuilding(request, response){
 
   const SQL = `INSERT INTO buildings (pin, taxpayer_name, prop_name, jurisdiction, present_use, app_value, lot_sqft, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`;
-  console.log(request.body.addBuilding);
 
   const values = [request.body.addBuilding[0], request.body.addBuilding[1], request.body.addBuilding[2], request.body.addBuilding[3], request.body.addBuilding[4], request.body.addBuilding[5], request.body.addBuilding[6], request.body.addBuilding[7]];
 
@@ -219,14 +229,11 @@ function postBuilding(request, response){
 //get details about single building
 function getBuildingDetails(request, response){
   let id = request.params.id;
-  console.log(id);
-  console.log(request.params.id);
   let SQL = 'SELECT * FROM buildings WHERE id=$1;';
 
   client.query(SQL, [id])
     .then(res=> {
       if(res.rowCount > 0) {
-        console.log(res.rows);
         response.render('showBuilding', {propertyData: res.rows[0]});
       }
 
@@ -245,11 +252,19 @@ function getSavedBuildings(req, res){
   return client.query(SQL)
 
     .then(result => {
-      // console.log(result);
       if(result.rowCount > 0 ) {
-        // console.log("results:", result);
         res.render('savedBuildings', {buildingsDb: result.rows});
       }
     });
 }
 
+
+//function to delete building from Database
+function deleteBuilding(request, response){
+  let SQL = `DELETE FROM buildings WHERE id=$1;`;
+  let id = request.params.id;
+
+  return client.query(SQL, [id])
+    .then(response.redirect('/savedBuildings'))
+    .catch(err => {handleError(err, response)});
+}
