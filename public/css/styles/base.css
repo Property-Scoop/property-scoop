@@ -72,7 +72,7 @@ footer{
     text-align: center;
     border-radius: 5px;
 }
-#indexPage form button, #searchResults form button{
+#indexPage form button{
     width: 30vw;
     margin: 40px auto 30px auto;
     height: 5vw;
@@ -84,7 +84,6 @@ footer{
 
 #indexPage form button{
   margin-bottom: 36vh;
-
 }
 
 #searchResults section button{
@@ -93,6 +92,9 @@ footer{
 #search-form.hide{
   display: none;
 }
+
+
+
 /* ======================================================= */
 
 #map {
@@ -117,77 +119,80 @@ footer{
     width: 75%; 
 }
 
-
 #searchResults .buildingData{
   margin-top: 40px;
 }
+
 #searchResults .buildingData p{
     font-size: 2em;
 }
 
-
 #searchResults .buildingData #smallNote{
     font-size: 0.75em;
-    margin-top: 1em;
-    
+    margin-top: 1em;  
 } 
+
 #searchResults .buttons{
     margin-bottom: 3vh;
-
+    display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+#searchResults form .submit{
+  width: 30vw;
+  margin: 40px auto 30px auto;
+  height: 5vw;
+  border-radius: 6px;
+  background-color: rgb(206, 133, 74);
+  font-size: 30px;
+  
 }
 
-#save{
-    margin-right: 30px;
-    margin-top: 30px;
-}
 #save, #newSearch{
     width: 25vw;
-    background-color: rgb(177, 87, 14);
+    background-color: rgb(206, 133, 74);
     height: 5vw;
     border-radius:5px;
+    margin-top: 40px;
+}
+#buildingDetails{
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
 }
 
+/* =================DROP DOWN MENU (credit to https://fullst-ck.dev/ for his awesome 
+* hamburger menu technic)============ */
 
-
-/* =====================DROP DOWN MENU================================= */
 a{
     transition: color 0.3s ease;
 }
 
-#menuToggle
-{
+#menuToggle{
   display: block;
   position: relative;
   top: 50px;
   left: 50px;
   width:calc(100% - 50px);
   z-index: 1;
-  
   -webkit-user-select: none;
   user-select: none;
- 
 }
 
-#menuToggle input
-{
+#menuToggle input{
   display: block;
   width: 40px;
   height: 32px;
   position: absolute;
   top: -7px;
   left: -5px;
-  
   cursor: pointer;
-  
   opacity: 0; /* hide this */
   z-index: 2; /* and place it over the hamburger */
-  
   -webkit-touch-callout: none;
 }
 
-
-#menuToggle span
-{
+#menuToggle span{
   display: block;
   width: 33px;
   height: 4px;
@@ -206,50 +211,33 @@ a{
               opacity 0.55s ease;
 }
 
-#menuToggle span:first-child
-{
+#menuToggle span:first-child{
   transform-origin: 0% 0%;
 }
 
-#menuToggle span:nth-last-child(2)
-{
+#menuToggle span:nth-last-child(2){
   transform-origin: 0% 100%;
 }
 
-/* 
- * Transform all the slices of hamburger
- * into a crossmark.
- */
-#menuToggle input:checked ~ span
-{
+/*  Transform all the spans into a crossmark. */
+#menuToggle input:checked ~ span{
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
   background: #232323;
 }
 
-/*
- * hide the middle one.
- */
-#menuToggle input:checked ~ span:nth-last-child(3)
-{
+/* hide the middle one.*/
+#menuToggle input:checked ~ span:nth-last-child(3){
   opacity: 0;
   transform: rotate(0deg) scale(0.2, 0.2);
 }
 
-/*
- * the last one should go the other direction
- */
-#menuToggle input:checked ~ span:nth-last-child(2)
-{
+/* the last one should go the other direction*/
+#menuToggle input:checked ~ span:nth-last-child(2){
   transform: rotate(-45deg) translate(0, -1px);
 }
 
-/*
- * Make this absolute positioned
- * at the top left of the screen
- */
-#menu
-{
+#menu{
   position: absolute;
   width: 100%;
   height: 50px;
@@ -266,11 +254,9 @@ a{
   transform: translate(-100%, 0);
   
   transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
-  
 }
 
-#menu li
-{
+#menu li {
     display: inline;
   padding: 10px 0;
   font-size: 27px;
@@ -278,23 +264,23 @@ a{
   font-weight: bold;
   color: #232323;
 }
-#menu li:hover{
-    /* border-bottom: 1px solid grey; */
-    color: rgb(177, 87, 14);
 
+#savedBuildingsPage #menu li {
+  padding: 20px;
 }
 
-/*
- * And let's slide it in from the left
- */
-#menuToggle input:checked ~ ul
-{
+
+
+
+#menu li:hover{
+    color: rgb(177, 87, 14);
+}
+
+#menuToggle input:checked ~ ul{
   transform: none;
 }
 
-
 /* ==================================================================== */
-
 
 
 /* ===================savedBuildingsPage============================ */
@@ -307,7 +293,7 @@ a{
   letter-spacing: 2px;
 }
 
-#savedBuildingsPage h2{
+#savedBuildingsPage h2, #showBuildingPage h2{
   font-size: 1.5em;
   font-weight: bold;
   color:rgb(48, 45, 45);
@@ -318,17 +304,32 @@ a{
 #savedBuildingsPage li{
   margin:0px auto 50px auto;
   width: 80%;
- 
-  
 }
+
+#savedBuildingsPage button, #showBuildingPage button{
+  width: 30vw;
+  margin: 40px auto 30px auto;
+  height: 5vw;
+  border-radius: 6px;
+  background-color: rgb(206, 133, 74);
+  font-size: 30px;
+}
+
+#savedBuildingsPage ul:last-child{
+  margin-bottom: 35vh;
+}
+
+#showBuildingPage .buttons{
+  display: flex;
+  flex-direction: row;
+}
+
+#showBuildingPage .container{
+  margin-bottom: 38vh;
+
+}
+  
+
 
 /* ================================================================== */
 
-#showBuildingPage h2{
-  font-size: 1.5em;
-  font-weight: bold;
-  color:rgb(48, 45, 45);
-  width: 80vw;
-  margin: 10px auto;
-
-}
