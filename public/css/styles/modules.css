@@ -1,1 +1,208 @@
+/* ===================index page form styling============================ */
+#indexPage form, #searchResults form{
+    display: flex;
+    flex-direction: column;
+}
 
+#indexPage form label, #searchResults form label{
+    margin-bottom: 30px;
+    font-size: 40px;
+}
+
+#indexPage form input, #searchResults form input{
+    margin:0px auto 30px auto;
+    font-size: 40px;
+    width: 70vw;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#indexPage form button{
+    width: 30vw;
+    margin: 40px auto 30px auto;
+    height: 5vw;
+    border-radius: 6px;
+    background-color: rgb(206, 133, 74);
+    font-size: 30px;
+}
+
+#indexPage form button{
+  margin-bottom: 36vh;
+}
+
+#searchResults section button{
+  font-size: 30px;
+}
+#search-form.hide{
+  display: none;
+}
+
+/* ======================================================= */
+
+
+/* =================styling for buildingData section=================== */
+#searchResults .buildingData{
+    margin-top: 40px;
+  }
+  
+  #searchResults .buildingData p{
+      font-size: 2em;
+  }
+  
+  #searchResults .buildingData #smallNote{
+      font-size: 0.75em;
+      margin-top: 1em;  
+  } 
+  
+  #searchResults .buttons{
+      margin-bottom: 3vh;
+      display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  #searchResults form .submit{
+    width: 30vw;
+    margin: 40px auto 30px auto;
+    height: 5vw;
+    border-radius: 6px;
+    background-color: rgb(206, 133, 74);
+    font-size: 30px;
+  }
+  
+  #save, #newSearch{
+      width: 25vw;
+      background-color: rgb(206, 133, 74);
+      height: 5vw;
+      border-radius:5px;
+      margin-top: 40px;
+  }
+
+  #buildingDetails{
+    width: 0px;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  /* ===================savedBuildingsPage and showBuildingsPage=========== */
+#savedBuildingsPage h3{
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: rgb(177, 87, 14);
+    letter-spacing: 2px;
+  }
+  
+  #savedBuildingsPage h2, #showBuildingPage h2{
+    font-size: 1.5em;
+    font-weight: bold;
+    color:rgb(48, 45, 45);
+    width: 80vw;
+    margin: 10px auto;
+  }
+  
+  #savedBuildingsPage li{
+    margin:0px auto 50px auto;
+    width: 80%;
+  }
+  
+  #savedBuildingsPage button, #showBuildingPage button{
+    width: 30vw;
+    margin: 40px auto 30px auto;
+    height: 5vw;
+    border-radius: 6px;
+    background-color: rgb(206, 133, 74);
+    font-size: 30px;
+  }
+  
+  #savedBuildingsPage ul:last-child{
+    margin-bottom: 35vh;
+  }
+  
+  #showBuildingPage .buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  
+  #showBuildingPage .container{
+    margin-bottom: 38vh;
+  
+  }
+  
+  /* ================================================================== */
+  
+  
+  
+  /* ==================================================================== */
+  /*about us page.*/
+  
+  .aboutimg {
+    border-radius: 50%;
+    height: 25em;
+    width: 25em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .aboutname {
+    font-weight: bolder;
+  }
+  
+  .aboutparagraph {
+    font-size: 13px;
+    width: 80%;
+    margin: auto;
+    text-align: justify;
+    text-justify: inter-word;
+  } 
+  
+  .herokuicon {
+    width: 3em;
+  }
+   h1 {
+     font-weight: bolder;
+   }
+  /* ==================================================================== */
+
+
+  /* ==========================table styling========================== */
+table{
+    border: 2px solid black;
+    box-shadow: 2px 2px 10px;
+    width: 100%;
+    
+   
+  }
+  td{
+    border: 2px solid black;
+    padding: 10px;
+    font-size: 20px;
+    text-align: left;
+  
+  }
+  li .buildingData{
+    margin: 10px auto;
+    width: 80%
+  }
+  
+  #searchResults table, #showBuildingPage table{
+    width: 75%;
+    margin: 10px auto;
+  }
+  
+  #searchResults table{
+    width: 75%;
+    margin: 10px auto;
+  }
+  
+  th{
+    font-size: 20px;
+    padding: 10px;
+    font-weight: 700;
+  }
+  /* ==================================================================== */
+  
